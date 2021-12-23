@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+JP:400,700&amp;subset=japanese">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<style type="text/css">
+<!--
+body {
+	font-family: 'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;
+	letter-spacing: 0.05rem;
+	line-height: 2.3rem;
+	text-align: justify;
+	word-wrap: break-word;
+}
+h1, h2 {
+	margin-top: 1rem;
+}
+div.container {
+	margin-bottom: 3rem;
+}
+pre {
+	padding: 0.5rem;
+	line-height: 1.3rem;
+	background-color: oldlace;
+}
+th, td {
+	border: solid 1px black;
+	padding: 0rem 0.5rem;
+}
+th {
+	text-align: center;
+}
+.navi {
+	text-align: right;
+}
+-->
+</style>
+<script>
+<!--
+function backPage(){
+	let fname = window.location.href.split('/').pop();
+	window.location.href = (fname == 'index.html')? '..' : 'index.html';
+}
+// -->
+</script>
+<title> switem記法</title>
+</head>
+<body>
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-9">
+
+<h1><a href="#switem記法" id="switem記法"></a>switem記法</h1>
+<ul>
+<li><a href="#概要">概要</a></li>
+<li><a href="#処理の流れ">処理の流れ</a></li>
+<li><a href="#テキストハンドル">テキストハンドル</a></li>
+<li><a href="#宣言">宣言</a></li>
+<li><a href="#parseハンドル">parseハンドル</a></li>
+<li><a href="#parse操作ハンドル">parse操作ハンドル</a>
+<ul>
+<li><a href="#onelineハンドル">onelineハンドル</a></li>
+<li><a href="#encloseハンドル">encloseハンドル</a></li>
+<li><a href="#indentハンドル">indentハンドル</a></li>
+</ul>
+</li>
+<li><a href="#formatハンドル">formatハンドル</a></li>
+<li><a href="#format操作ハンドル">format操作ハンドル</a>
+<ul>
+<li><a href="#subformatハンドル">subformatハンドル</a></li>
+<li><a href="#replaceハンドル">replaceハンドル</a></li>
+<li><a href="#reprexハンドル">reprexハンドル</a></li>
+<li><a href="#callハンドル">callハンドル</a></li>
+</ul>
+</li>
+<li><a href="#ナンバリング">ナンバリング</a></li>
+<li><a href="#出力">出力</a></li>
+</ul>
+<h2><a href="#概要" id="概要"></a>概要</h2>
+<p>　switem記法は、テキストを解析し整形するスクリプトのための記法です。<br />
+　テキストの書式を差し替えるような加工ができます。<br />
+　一部の処理に <a href="/clmap/">clmap</a>で定義したクロージャを使用できます。</p>
+<p>　switem記法は tpacを利用したDSLです。tpacの詳細は <a href="/tpac/">tpac</a>を参照してください。<br />
+　以下、tpac記法と重複する説明は省いています。</p>
+<h2><a href="#処理の流れ" id="処理の流れ"></a>処理の流れ</h2>
+<p>　switem文書は二種類のハンドル(parse, format)とその配下のハンドルで構成されます。<br />
+　対象のテキストを解析(parse)して構造化し、整形(format)した上で再びテキストとして出力します。<br />
+　便宜上、対象のテキストから一部を切りとった行の集まりをチャンクと呼びます。</p>
+<p>　parseハンドルにはテキストをどう解析するか記述します。<br />
+　テキストをチャンクに分割し、チャンクごとに名前を与えます。<br />
+　また、チャンク同士にツリー構造を持たせます。</p>
+<p>　formatハンドルはテキストをどう整形するか記述します。<br />
+　指定した名前のチャンクに対し置換などの文字列加工処理をします。<br />
+　最後に各チャンクを連結し、出力します。</p>
+<h2><a href="#テキストハンドル" id="テキストハンドル"></a>テキストハンドル</h2>
+<p>　parseハンドルで解析した結果はひとつのtpac文書として保持します。<br />
+　このtpac文書の宣言のタグは &quot;doc&quot;です。<br />
+　tpac文書を構成する各ハンドルを便宜上「テキストハンドル」と呼びます。<br />
+　テキストハンドルには以下の二種類があります。</p>
+<ul>
+<li>チャンクハンドル
+<ul>
+<li>解析によってテキストから抽出したチャンクをデフォルトキーに格納します。<br />
+タグは &quot;chunk&quot;、名前は通番を用います。</li>
+</ul>
+</li>
+<li>カバーハンドル
+<ul>
+<li>チャンクハンドルあるいは他のカバーハンドルを下位のハンドルとして保持します。<br />
+タグは parse操作ハンドルの名前、名前は通番を用います。</li>
+</ul>
+</li>
+</ul>
+<h2><a href="#宣言" id="宣言"></a>宣言</h2>
+<p>　宣言のタグは「switem」です。<br />
+　可能な子要素は parse, formatハンドルです。<br />
+　以下のキーを指定できます。</p>
+<ul>
+<li>outキー
+<ul>
+<li>配下のparseハンドルのoutキーのデフォルト値です。<br />
+省略時の値は&quot;para&quot;です。</li>
+</ul>
+</li>
+</ul>
+<h2><a href="#parseハンドル" id="parseハンドル"></a>parseハンドル</h2>
+<p>　parseハンドルは配下にテキストの解析方法を定義したハンドルを記述します。<br />
+　解析時はまず名前を省略した parseハンドルを参照します。<br />
+　再帰的な解析をするとき、名前を付与した parseハンドルを呼ぶことができます。<br />
+　以下のキーを指定できます。</p>
+<ul>
+<li>outキー
+<ul>
+<li>parse操作ハンドルすべての解析対象にならなかった行の扱いを指定します。<br />
+省略時の値は&quot;para&quot;です。<br />
+以下の値のいずれかを指定できます。
+<ul>
+<li>para
+<ul>
+<li>空行を区切り行としてチャンクを分割し、それぞれチャンクハンドルを作成します。</li>
+</ul>
+</li>
+<li>whole
+<ul>
+<li>空行を含むすべての行をひとつのチャンクとしてチャンクハンドルを作成します。</li>
+</ul>
+</li>
+<li>none
+<ul>
+<li>チャンクハンドルを作成しません。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2><a href="#parse操作ハンドル" id="parse操作ハンドル"></a>parse操作ハンドル</h2>
+<p>　parseハンドル配下のハンドルを「parse操作ハンドル」と呼びます。<br />
+　parse操作ハンドルはすべて名前が必須です。<br />
+　以下のキーを指定できます。</p>
+<ul>
+<li>referキー
+<ul>
+<li>下位のカバーハンドルに適用する parseハンドルを指定します。<br />
+参照を指定してください。<br />
+省略時は自parseハンドルを用います。<br />
+下位のカバーハンドルを解析対象外にしたい場合は nullを指定してください。</li>
+</ul>
+</li>
+</ul>
+<h3><a href="#onelineハンドル" id="onelineハンドル"></a>onelineハンドル</h3>
+<p>　onelineハンドルは一行のみ解析します。</p>
+<p>　特定の先頭記号で始まる一行、あるいは正規表現とマッチする一行を解析します。</p>
+<p>　以下のキーを指定できます。どちらか一方だけを指定してください。<br />
+　両方を指定した場合、patternキーは無視されます。どちらも指定しなかった場合は解析エラーとなります。</p>
+<ul>
+<li>bulletキー
+<ul>
+<li>先頭記号を指定します。<br />
+先頭記号を除いた残りの箇所をテキストとみなします。<br />
+文字列で指定してください。</li>
+</ul>
+</li>
+<li>patternキー
+<ul>
+<li>正規表現を指定します。<br />
+グループがある場合、1番目のグループをテキストとみなします。<br />
+グループが無い場合、行全体をテキストとみなします。</li>
+</ul>
+</li>
+</ul>
+<p>　カバーハンドルに以下のキーを保持します。</p>
+<ul>
+<li>bulletキー
+<ul>
+<li>先頭記号を保持します。</li>
+</ul>
+</li>
+</ul>
+<h3><a href="#encloseハンドル" id="encloseハンドル"></a>encloseハンドル</h3>
+<p>　encloseハンドルは特定の開始行と終端行とで挟まれた行を解析します。</p>
+<p>　まず開始行を探します。<br />
+　開始行がみつかったなら、その次行以降から終端行を探します。<br />
+　開始行の次行以降と終端行の間に他の開始行があった場合は入れ子と判断し、整合する終端行を探します。<br />
+　終端行がみつからなかった場合はエラーとします。</p>
+<p>　以下のキーを指定できます。</p>
+<ul>
+<li>bgnキー
+<ul>
+<li>開始行を指定します。<br />
+必須です。<br />
+文字列あるいは正規表現で指定してください。</li>
+</ul>
+</li>
+<li>endキー
+<ul>
+<li>終端行を指定します。<br />
+省略時は終端行を開始行と同じ文字列とみなします。<br />
+文字列あるいは正規表現で指定してください。</li>
+</ul>
+</li>
+</ul>
+<p>　カバーハンドルに以下のキーを保持します。</p>
+<ul>
+<li>topキー
+<ul>
+<li>開始行を保持します。</li>
+</ul>
+</li>
+<li>btmキー
+<ul>
+<li>終端行を保持します。</li>
+</ul>
+</li>
+</ul>
+<h3><a href="#indentハンドル" id="indentハンドル"></a>indentハンドル</h3>
+<p>　indentハンドルはインデントされた行を解析します。</p>
+<p>　先頭記号で行の先頭が開始する行を探します。<br />
+　次行以降、同じ先頭記号が続いているか確認します。<br />
+　同じ先頭記号が続く行をチャンクとして格納します。</p>
+<p>　以下のキーを指定できます。</p>
+<ul>
+<li>bulletキー
+<ul>
+<li>先頭記号を指定します。<br />
+必須です。<br />
+文字列あるいは正規表現で指定してください。</li>
+</ul>
+</li>
+<li>moreキー
+<ul>
+<li>先頭記号が二行目以降から異なるときに指定します。<br />
+省略時は bulletキーと同じ値が指定されたものとみなします。<br />
+文字列あるいは正規表現で指定してください。</li>
+</ul>
+</li>
+</ul>
+<p>　カバーハンドルに以下のキーを保持します。</p>
+<ul>
+<li>bulletキー
+<ul>
+<li>先頭記号を保持します。</li>
+</ul>
+</li>
+<li>moreキー
+<ul>
+<li>二行目の先頭記号を保持します。</li>
+</ul>
+</li>
+</ul>
+<h2><a href="#formatハンドル" id="formatハンドル"></a>formatハンドル</h2>
+<p>　formatハンドルは配下にテキストの加工方法を定義したハンドルを記述します。<br />
+　加工時、まず名前を省略した formatハンドルを参照します。<br />
+　下位のチャンクについて加工するとき、名前を付与した formatハンドルを呼ぶことができます。</p>
+<h2><a href="#format操作ハンドル" id="format操作ハンドル"></a>format操作ハンドル</h2>
+<p>　formatハンドル配下のハンドルを「format操作ハンドル」と呼びます。<br />
+　format操作ハンドルはすべて名前が必須です。<br />
+　以下のキーを指定できます。</p>
+<ul>
+<li>includeキー
+<ul>
+<li>処理対象としたいカバーハンドルのタグを記述します。<br />
+文字列で指定してください。<br />
+複数指定したい場合はテキストとして改行区切りで指定してください。</li>
+</ul>
+</li>
+<li>excludeキー
+<ul>
+<li>処理対象外とするカバーハンドルのタグを記述します。<br />
+文字列で指定してください。<br />
+複数指定したい場合はテキストとして改行区切りで指定してください。</li>
+</ul>
+</li>
+</ul>
+<p>　include, excludeキーで指定されたタグについて、カバーハンドル（チャンクハンドルなら上位のカバーハンドル）のタグが、以下の条件をどちらも満たすときに処理対象となります。</p>
+<ul>
+<li>includeが空、もしくは includeのいずれかひとつでもタグが一致する</li>
+<li>excludeのどれともタグが一致しない</li>
+</ul>
+<h3><a href="#subformatハンドル" id="subformatハンドル"></a>subformatハンドル</h3>
+<p>　subformatハンドルは整形に利用するformatハンドルを指定します。<br />
+　指定したカバーハンドルの下位のカバーハンドルの整形に用いる formatハンドルを指定します。<br />
+　指定がなければsubformatハンドルが属すformatハンドルを利用します。<br />
+　複数のsubformatハンドルで対象となるカバーハンドルの場合、それぞれのformatハンドルから整形処理がされてしまうことに注意してください。</p>
+<p>　以下のキーを指定できます。</p>
+<ul>
+<li>referキー
+<ul>
+<li>下位のカバーハンドルに適用する formatハンドルを指定します。<br />
+参照を指定してください。<br />
+必須です。<br />
+下位のカバーハンドルを整形対象外にしたい場合は nullを指定してください。</li>
+</ul>
+</li>
+</ul>
+<h3><a href="#replaceハンドル" id="replaceハンドル"></a>replaceハンドル</h3>
+<p>　replaceハンドルはチャンク内の固定文字列を置換します。<br />
+　処理対象はチャンクハンドルのみです。</p>
+<p>　テキストで検索文字列、置換文字列をタブ区切りで指定します。<br />
+　改行区切りで検索文字列、置換文字列の組を複数指定できます。<br />
+　検索文字列と一致する文字列が複数あった場合、すべて置換します。</p>
+<p>　以下は文字列「Hello」を「Goodbye」に、「テスト」を「試験」に置換する例です。</p>
+<pre><code>#&gt;&gt; replace
+Hello	Goodbye
+テスト	試験
+</code></pre>
+<h3><a href="#reprexハンドル" id="reprexハンドル"></a>reprexハンドル</h3>
+<p>　reprexハンドルは正規表現でチャンク内の文字列を置換します。<br />
+　処理対象はチャンクハンドルのみです。</p>
+<p>　テキストで検索文字列、置換文字列をタブ区切りで指定します。<br />
+　改行区切りで検索文字列、置換文字列の組を複数指定できます。<br />
+　検索文字列と一致する文字列が複数あった場合、すべて置換します。<br />
+　各行の末尾に改行コードを追加して連結した文字列に対し置換します。<br />
+　このため改行を含む正規表現を指定することができます。</p>
+<p>　以下は正規表現「H([\w+])」「W([\w+])」とマッチする文字列を「h$1」「w$1」に置換する例です。<br />
+　たとえば「Hello World」は「hello world」に置換します。</p>
+<pre><code>#&gt;&gt; reprex
+H([\w+])	h$1
+W([\w+])	w$1
+</code></pre>
+<h3><a href="#callハンドル" id="callハンドル"></a>callハンドル</h3>
+<p>　callハンドルはクロージャでチャンクを加工します。<br />
+　チャンクハンドル、カバーハンドルどちらも処理対象とします。</p>
+<p>　チャンクをクロージャで加工します。<br />
+　またチャンクに対応するハンドルの、bgnキー、endキーの値を加工することもできます。</p>
+<p>　以下のキーを指定できます。</p>
+<ul>
+<li>coverキー
+<ul>
+<li>カバーハンドルが保持する値を加工したいとき指定します。<br />
+テキストでクロージャを指定してください。<br />
+もしくは参照で clmap文書のクロージャを指定してください。<br />
+クロージャの引数としてカバーハンドルを渡します。<br />
+戻り値は不要です。<br />
+省略時は加工をしません。</li>
+</ul>
+</li>
+<li>chunkキー
+<ul>
+<li>チャンクハンドルを加工するためのクロージャを指定します。<br />
+テキストでクロージャを指定してください。<br />
+もしくは参照で clmap文書のクロージャを指定してください。<br />
+クロージャの引数としてチャンクハンドルを渡します。<br />
+戻り値として加工したチャンク（文字列のリスト）を返してください。<br />
+省略時は加工をしません。</li>
+</ul>
+</li>
+</ul>
+<p>　以下はタグ名「コラム」のカバーハンドルについて bgnキーを「【コラム：ここから】」に、endキーを「【コラム：ここまで】」に、このカバーハンドル配下のチャンクハンドルについてチャンクの末尾に「written by TARO」という行を追加する例です。</p>
+<pre><code>#&gt;&gt; call:コラム
+#-include コラム
+#-cover
+{ def hndl -&gt;
+	hndl.bgn = '【コラム：ここから】'
+	hndl.end = '【コラム：ここまで】'
+}
+#-chunk
+{ def hndl -&gt;
+	return [ hndl.dflt, &quot;written by TARO&quot; ].flatten()
+}
+</code></pre>
+<h2><a href="#ナンバリング" id="ナンバリング"></a>ナンバリング</h2>
+<p>　formatハンドルでの整形処理の前に、通し番号などのキーをテキストハンドルに追加します。<br />
+　具体的には以下のキーを追加します。</p>
+<ul>
+<li>numキー
+<ul>
+<li>同じ親ハンドルに属す下位ハンドルの通し番号（１始まり）を保持します。</li>
+</ul>
+</li>
+<li>totalキー
+<ul>
+<li>同じ親ハンドルに属す下位ハンドルの総数を保持します。</li>
+</ul>
+</li>
+<li>tagnumキー
+<ul>
+<li>同じ親ハンドルに属す下位ハンドルで、同じタグが連続するときの通し番号（１始まり）を保持します。</li>
+</ul>
+</li>
+<li>tagtotalキー
+<ul>
+<li>同じ親ハンドルに属す下位ハンドルで、同じタグが連続するハンドルの総数を保持します。</li>
+</ul>
+</li>
+</ul>
+<h2><a href="#出力" id="出力"></a>出力</h2>
+<p>　formatハンドルでの整形処理の後で出力処理をします。</p>
+<p>　各チャンクハンドルのデフォルトキーに格納されたチャンクをツリー構造に沿って連結することで生成したテキストを出力します。<br />
+　このときチャンクを構成する各行の末尾にはシステム固有の改行コードを付与します。</p>
+<p>　カバーハンドルについてキー毎に以下の処理をします。<br />
+　キーが未指定ならば、なにもしません。</p>
+<ul>
+<li>bgnキー
+<ul>
+<li>カバーハンドル内のテキストの先頭行の行頭に記述します。<br />
+topキーも指定された場合は先頭行（topキー指定値）の次の行を対象にします。</li>
+</ul>
+</li>
+<li>endキー
+<ul>
+<li>カバーハンドル内のテキストの終端行の末尾に記述します。<br />
+btmキーも指定された場合は終端行（btmキー指定値）の前の行を対象にします。</li>
+</ul>
+</li>
+<li>topキー
+<ul>
+<li>カバーハンドル内のテキストに先頭行として挿入します。</li>
+</ul>
+</li>
+<li>btmキー
+<ul>
+<li>カバーハンドル内のテキストに終端行として挿入します。</li>
+</ul>
+</li>
+<li>bulletキー
+<ul>
+<li>カバーハンドル内のテキストの先頭行の行頭に付与します。</li>
+</ul>
+</li>
+<li>moreキー
+<ul>
+<li>カバーハンドル内のテキストの二行目以降の行頭に付与します。</li>
+</ul>
+</li>
+</ul>
+
+<hr/>
+
+<div class="navi"><button type="button" class="btn btn-primary" onclick="backPage();">戻る</button></div>
+
+</div><!-- end of col -->
+</div><!-- end of row -->
+</div><!-- end of container -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>

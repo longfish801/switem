@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+JP:400,700&amp;subset=japanese">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<style type="text/css">
+<!--
+body {
+	font-family: 'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;
+	letter-spacing: 0.05rem;
+	line-height: 2.3rem;
+	text-align: justify;
+	word-wrap: break-word;
+}
+h1, h2 {
+	margin-top: 1rem;
+}
+div.container {
+	margin-bottom: 3rem;
+}
+pre {
+	padding: 0.5rem;
+	line-height: 1.3rem;
+	background-color: oldlace;
+}
+th, td {
+	border: solid 1px black;
+	padding: 0rem 0.5rem;
+}
+th {
+	text-align: center;
+}
+.navi {
+	text-align: right;
+}
+-->
+</style>
+<script>
+<!--
+function backPage(){
+	let fname = window.location.href.split('/').pop();
+	window.location.href = (fname == 'index.html')? '..' : 'index.html';
+}
+// -->
+</script>
+<title> switem</title>
+</head>
+<body>
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-9">
+
+<h1><a href="#switem" id="switem"></a>switem</h1>
+<ul>
+<li><a href="#概要">概要</a></li>
+<li><a href="#特徴">特徴</a></li>
+<li><a href="#サンプルコード">サンプルコード</a></li>
+<li><a href="#ドキュメント">ドキュメント</a></li>
+<li><a href="#githubリポジトリ">GitHubリポジトリ</a></li>
+<li><a href="#mavenリポジトリ">Mavenリポジトリ</a></li>
+</ul>
+<h2><a href="#概要" id="概要"></a>概要</h2>
+<p>　テキストのテンプレートを差し替えます。<br />
+　テキストを解析、整形して、新たな書式に差し替えるスクリプトを実行します。</p>
+<p>　個人が学習のために開発したものです。<br />
+　故障対応や問合せ回答などのサポートはしていません。</p>
+<h2><a href="#特徴" id="特徴"></a>特徴</h2>
+<ul>
+<li>テキストを加工するスクリプトを switem記法で記述します。<br />
+switem記法は <a href="/tpac/">tpac</a>を利用したDSLです。</li>
+<li>テキストの書式を差し替えることを目的としています。<br />
+構造を大きく変えることは困難です。<br />
+たとえば行の集約、並べ替えには対応していません。</li>
+</ul>
+<p>　このライブラリの名称は書式の切り替え（Switch Template）に由来しています。</p>
+<h2><a href="#サンプルコード" id="サンプルコード"></a>サンプルコード</h2>
+<p>　以下に switem文書のサンプルを示します（src/test/resources/sample.tpac）。<br />
+　Markdown形式で記述されたテキストをHTML形式に変換します。<br />
+　テキストを解析してtpac文書に変換し、それをHTML形式に整形します。</p>
+<pre><code>#! switem
+#&gt; parse
+#&gt;&gt; enclose:pre
+#-bgn ```
+#&gt;&gt; indent:ul
+#-bullet - 
+#-more   
+#&gt; format
+#&gt;&gt; replace:pre
+#-include pre
+World	Groovy
+#&gt;&gt; call:pre
+#-include pre
+#-cover
+{ def hndl -&gt;
+	hndl.top = '&lt;pre&gt;'
+	hndl.btm = '&lt;/pre&gt;'
+}
+#&gt;&gt; call:ul
+#-include ul
+#-cover
+{ def hndl -&gt;
+	if (hndl.tagnum == 1) hndl.top = '&lt;ul&gt;'
+	if (hndl.tagnum == hndl.tagtotal) hndl.btm = '&lt;/ul&gt;'
+	hndl.bgn = '&lt;li&gt;'
+	hndl.end = '&lt;/li&gt;'
+	hndl.bullet = (hndl.level == 1)? '' : '  '
+	hndl.more = (hndl.level == 1)? '' : '  '
+	hndl.gap = ''
+	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+}
+#&gt;&gt; call:p
+#-include doc
+#-chunk
+{ def hndl -&gt;
+	def lines = hndl.dflt.collect()
+	lines[0] = &quot;&lt;p&gt;${lines[0]}&quot;
+	lines[lines.size() - 1] = &quot;${lines[lines.size() - 1]}&lt;/p&gt;&quot;
+	return lines
+}
+#&gt;&gt; call:br
+#-chunk
+{ def hndl -&gt;
+	return hndl.dflt.join(&quot;&lt;br/&gt;${System.lineSeparator()}&quot;).split(System.lineSeparator())
+}
+</code></pre>
+<p>　上記の switem文書を読みこんでクロージャを実行し、期待する戻り値を得られるか assertで確認するスクリプトです（src/test/groovy/Sample.groovy）。</p>
+<pre><code>import io.github.longfish801.switem.SwitemServer
+
+File dir = new File('src/test/resources')
+String text = new File(dir, 'target.md').text
+String tpac = new File(dir, 'parsed.tpac').text
+String html = new File(dir, 'formatted.html').text
+
+try {
+	def switem = new SwitemServer().soak(new File('src/test/resources/sample.tpac')).switem
+	switem.parsedWriter = new StringWriter()
+	assert html == switem.run(text).normalize()
+	assert tpac == switem.parsedWriter.toString().normalize()
+} catch (exc){
+	exc.printStackTrace()
+}
+</code></pre>
+<p>　switem文書による変換の対象となるテキストです（src/test/resources/target.md）。</p>
+<pre><code>This is sample text.
+Please read this carefully.
+
+```
+println 'Hello, World!'
+println 'Hello, Groovy!'
+```
+
+- List
+  - Elem1
+    Elem2
+- Map
+  - Key
+  - Value
+</code></pre>
+<p>　switem文書で上記のテキストを解析した結果であるtpac文書です（src/test/resources/parsed.tpac）。</p>
+<pre><code>#! doc
+#&gt;
+
+#&gt; chunk:1
+This is sample text.
+Please read this carefully.
+#&gt;
+
+#&gt; pre:1
+#-top ```
+#-btm ```
+#&gt;
+
+#&gt;&gt; chunk:1
+println 'Hello, World!'
+println 'Hello, Groovy!'
+#&gt;
+
+#&gt; ul:1
+#-bullet - 
+#-more   
+#&gt;
+
+#&gt;&gt; chunk:1
+List
+#&gt;
+
+#&gt;&gt; ul:2
+#-bullet - 
+#-more   
+#&gt;
+
+#&gt;&gt;&gt; chunk:1
+Elem1
+Elem2
+#&gt;
+
+#&gt; ul:3
+#-bullet - 
+#-more   
+#&gt;
+
+#&gt;&gt; chunk:1
+Map
+#&gt;
+
+#&gt;&gt; ul:4
+#-bullet - 
+#&gt;
+
+#&gt;&gt;&gt; chunk:1
+Key
+#&gt;
+
+#&gt;&gt; ul:5
+#-bullet - 
+#&gt;
+
+#&gt;&gt;&gt; chunk:1
+Value
+#&gt;
+
+#!
+
+</code></pre>
+<p>　switem文書で上記のtpac文書を整形した結果です（src/test/resources/formatted.html）。</p>
+<pre><code>&lt;p&gt;This is sample text.&lt;br/&gt;
+Please read this carefully.&lt;/p&gt;
+
+&lt;pre&gt;
+println 'Hello, Groovy!'&lt;br/&gt;
+println 'Hello, Groovy!'
+&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;List
+  &lt;ul&gt;
+  &lt;li&gt;Elem1&lt;br/&gt;
+  Elem2&lt;/li&gt;
+  &lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Map
+  &lt;ul&gt;
+  &lt;li&gt;Key&lt;/li&gt;
+  &lt;li&gt;Value&lt;/li&gt;
+  &lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<p>　このサンプルコードは build.gradle内の execSamplesタスクで実行しています。</p>
+<h2><a href="#ドキュメント" id="ドキュメント"></a>ドキュメント</h2>
+<ul>
+<li><a href="groovydoc/">Groovydoc</a></li>
+<li><a href="notation.html">switem記法</a></li>
+<li><a href="tagdsl.md">タグDSL</a></li>
+</ul>
+<h2><a href="#githubリポジトリ" id="githubリポジトリ"></a>GitHubリポジトリ</h2>
+<ul>
+<li><a href="https://github.com/longfish801/switem">switem</a></li>
+</ul>
+<h2><a href="#mavenリポジトリ" id="mavenリポジトリ"></a>Mavenリポジトリ</h2>
+<p>　本ライブラリの JARファイルを <a href="https://github.com/longfish801/maven">GitHub上の Mavenリポジトリ</a>で公開しています。<br />
+　build.gradleの記述例を以下に示します。</p>
+<pre><code>repositories {
+	mavenCentral()
+	maven { url 'https://longfish801.github.io/maven/' }
+}
+
+dependencies {
+	implementation group: 'io.github.longfish801', name: 'switem', version: '0.3.00'
+}
+</code></pre>
+
+<hr/>
+
+<div class="navi"><button type="button" class="btn btn-primary" onclick="backPage();">戻る</button></div>
+
+</div><!-- end of col -->
+</div><!-- end of row -->
+</div><!-- end of container -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>

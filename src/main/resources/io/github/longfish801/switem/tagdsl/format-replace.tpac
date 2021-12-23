@@ -1,0 +1,31 @@
+#! clmap:format-replace
+#> map:formatOperator
+#>> map:exist
+#>>> closure:replace
+#>> map:conds
+#>>> config:replace
+	_ {
+		required = true
+		types = [ List ]
+	}
+#>> map:visit
+#>>> closure:replace
+	// デフォルトキーから検索語と置換語とのマップを初期化します
+	Map repMap = [:]
+	operator.dflt.each { String line ->
+		int tabIdx = line.indexOf("\t")
+		if (tabIdx > 0) repMap[line.substring(0, tabIdx)] = line.substring(tabIdx + 1)
+	}
+	operator.repMap = repMap
+#>> map:formatChunkHandle
+#>>> dec
+#-replace
+	import java.util.regex.Matcher
+	import java.util.regex.Pattern
+#>>> closure:replace
+	String text = chunkHandle.dflt.join("\n")
+	operator.repMap.each { String findWord, String replacement ->
+		text = text.replaceAll(Pattern.quote(findWord), Matcher.quoteReplacement(replacement))
+	}
+	chunkHandle._ = text.split("\n")
+#!

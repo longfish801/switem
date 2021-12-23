@@ -1,0 +1,15 @@
+#! switem
+#> parse
+#>> enclose:column1
+#-bgn _===
+#>> enclose:column2
+#-refer @/switem/parse:refer2
+#-bgn ---
+#>> enclose:column3
+#-refer null
+#-bgn ```
+#>> indent:item1
+#-bullet - 
+#> parse:refer2
+#>> indent:item2
+#-bullet * 

@@ -1,0 +1,18 @@
+#! switem
+#> parse
+#>> indent:箇条書き
+#-bullet ・
+#-more   
+#> format
+#>> call:箇条書き
+#-include 箇条書き
+#-cover
+{ def hndl ->
+	hndl.bgn = "${(hndl.tagnum == 1)? '<ul>' : ''}<li>"
+	hndl.end = "</li>${(hndl.tagnum == hndl.tagtotal)? '</ul>' : ''}"
+	String indent = (hndl.upper.tag == 'doc')? '' : "\t"
+	hndl.bullet = indent
+	hndl.more = indent
+	hndl.gap = ''
+	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+}

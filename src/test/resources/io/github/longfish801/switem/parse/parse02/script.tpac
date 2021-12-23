@@ -1,0 +1,10 @@
+#! switem
+#> parse
+#>> enclose:comment
+#-refer @/switem/parse:comment
+#-bgn /*
+#-end */
+#>> enclose:column
+#-bgn 【引用：ここから】
+#-end 【引用：ここまで】
+#> parse:comment

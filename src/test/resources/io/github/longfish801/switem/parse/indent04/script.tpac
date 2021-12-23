@@ -1,0 +1,5 @@
+#! switem
+#> parse
+#>> indent:blockquote
+#-bullet :^[\*\-] 
+#-more :^ {2}

@@ -1,0 +1,7 @@
+#! switem
+#-out none
+#> parse
+#>> enclose:column1
+#-bgn _---
+#>> enclose:column2
+#-bgn _===

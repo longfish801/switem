@@ -1,0 +1,31 @@
+#! clmap:switem
+#> map:switem
+#>> map:output
+#>>> closure
+	Closure getLines
+	getLines = { def handle ->
+		// チャンクハンドルならばテキストを返します
+		if (handle.tag == 'chunk') return handle.dflt
+		// カバーハンドルなら下位ハンドルを再帰的に呼びます
+		List lines = []
+		Closure getVal = { String value -> return (value != null)? value : '' }
+		boolean isFirstLine = true
+		handle.lowers.values().eachWithIndex { def lowerHandle, int hndlIdx ->
+			List lowerLines = getLines.call(lowerHandle)
+			String dfltGap = (hndlIdx < handle.lowers.size() - 1)? System.lineSeparator(): ''
+			if (hndlIdx == 0 && handle.top != null) lowerLines.add(0, handle.top)
+			if (hndlIdx == handle.lowers.size() - 1 && handle.btm != null) lowerLines << handle.btm
+			lowerLines.eachWithIndex { String line, int lineIdx ->
+				int bgnIdx = (handle.top == null)? 0 : 1
+				int endIdx = (handle.btm == null)? lowerLines.size() - 1 : lowerLines.size() - 2
+				String bullet = (hndlIdx == 0 && lineIdx == 0)? getVal.call(handle.bullet) : getVal.call(handle.more)
+				String bgn = (hndlIdx == 0 && lineIdx == bgnIdx)? getVal.call(handle.bgn) : ''
+				String end = (hndlIdx == handle.lowers.size() - 1 && lineIdx == endIdx)? getVal.call(handle.end) : ''
+				String gap = (lineIdx == lowerLines.size() - 1)? ((lowerHandle.gap != null)? lowerHandle.gap : dfltGap) : ''
+				lines << "${bullet}${bgn}${line}${end}${gap}"
+			}
+		}
+		return lines
+	}
+	getLines.call(hndl).each { String line -> writer << "${line}${System.lineSeparator()}" }
+#!

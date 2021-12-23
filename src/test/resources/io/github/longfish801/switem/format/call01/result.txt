@@ -1,0 +1,6 @@
+Hello, World.
+
+【コラム：ここから】
+Hello, Groovy.
+written by TARO
+【コラム：ここまで】

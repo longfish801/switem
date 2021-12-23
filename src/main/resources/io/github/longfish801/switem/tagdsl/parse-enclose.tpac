@@ -1,0 +1,65 @@
+#! clmap:parse-enclose
+#> map:parseOperator
+#>> map:exist
+#>>> closure:enclose
+#>> map:conds
+#>>> config:enclose
+	import java.util.regex.Pattern
+	bgn {
+		required = true
+		types = [ String, Pattern ]
+	}
+	end {
+		types = [ String, Pattern ]
+	}
+#>> map:visit
+#>>> dec
+#-enclose
+	import java.util.regex.Pattern
+#>>> closure:enclose
+	// bgnキーから範囲の開始か否か判定するクロージャを初期化します
+	switch (operator.bgn){
+		case String: operator.isBgn = { String line -> return (line == operator.bgn) }; break
+		case Pattern: operator.isBgn = { String line -> return operator.bgn.matcher(line).matches() }; break
+	}
+	// endキーから範囲の終了か否か判定するクロージャを初期化します
+	if (operator.end == null){
+		operator.isEnd = { String line, String bgnLine -> return (line == bgnLine) }
+	} else {
+		switch (operator.end){
+			case String: operator.isEnd = { String line, String bgnLine -> return (line == operator.end) }; break
+			case Pattern: operator.isEnd = { String line, String bgnLine -> return operator.end.matcher(line).matches() }; break
+		}
+	}
+#>> map:detectRange
+#>>> dec
+#-enclose
+	import io.github.longfish801.switem.ParseException
+	import io.github.longfish801.switem.SwitemMsg as msgs
+#>>> closure:enclose
+	// 開始行でなければ終了します
+	if (operator.isBgn.call(lines[lineIdx]) == false) return size
+	// 終端行までの行数を求めます
+	List bgnLines = [ lines[lineIdx] ]
+	for (int idx = lineIdx + 1; idx < lines.size(); idx ++){
+		if (operator.isEnd.call(lines[idx], bgnLines.last())){
+			bgnLines.removeLast()
+			if (bgnLines.empty){
+				size = idx - lineIdx + 1
+				break
+			}
+		} else {
+			if (operator.isBgn.call(lines[idx])) bgnLines << lines[idx]
+		}
+	}
+	// 終端行がない場合は例外を投げます
+	if (size == 0){
+		throw new ParseException(String.format(msgs.exc.noEndLine, bgnLines.first()))
+	}
+#>> map:createCoverHandle
+#>>> dec
+#>>> closure:enclose
+	coverHandle.top = lines.removeAt(0)
+	coverHandle.btm = lines.removeLast()
+	operator.parseRecursive(coverHandle, lines)
+#!

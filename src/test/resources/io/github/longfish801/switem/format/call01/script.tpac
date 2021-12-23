@@ -1,0 +1,16 @@
+#! switem
+#> parse
+#>> enclose:column
+#-bgn ---
+#> format
+#>> call:column
+#-include column
+#-cover
+{ def hndl ->
+	hndl.top = '【コラム：ここから】'
+	hndl.btm = '【コラム：ここまで】'
+}
+#-chunk
+{ def hndl ->
+	return [ hndl.dflt, 'written by TARO' ].flatten()
+}

@@ -1,0 +1,36 @@
+#! clmap:format-reprex
+#> map:formatOperator
+#>> map:exist
+#>>> closure:reprex
+#>> map:conds
+#>>> config:reprex
+	_ {
+		required = true
+		types = [ List ]
+	}
+#>> map:visit
+#>>> dec
+#-reprex
+	import java.util.regex.Pattern
+#>>> closure:reprex
+	// デフォルトキーから検索語と置換語とのマップを初期化します
+	Map repMap = [:]
+	operator.dflt.each { String line ->
+		int tabIdx = line.indexOf("\t")
+		if (tabIdx > 0){
+			Pattern pattern = Pattern.compile(line.substring(0, tabIdx), Pattern.MULTILINE)
+			repMap[pattern] = line.substring(tabIdx + 1)
+		}
+	}
+	operator.repMap = repMap
+#>> map:formatChunkHandle
+#>>> dec
+#-reprex
+	import java.util.regex.Pattern
+#>>> closure:reprex
+	String text = chunkHandle.dflt.join("\n")
+	operator.repMap.each { Pattern pattern, String replacement ->
+		text = pattern.matcher(text).replaceAll(replacement)
+	}
+	chunkHandle._ = text.split("\n")
+#!

@@ -1,0 +1,6 @@
+Hello, World.
+* Hello, Groovy.
+  Bye, Groovy.
+* Hi, Groovy.
+  Bye, World.
+Hi, World.

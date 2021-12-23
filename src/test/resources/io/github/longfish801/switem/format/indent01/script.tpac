@@ -1,0 +1,19 @@
+#! switem
+#> parse
+#>> indent:箇条書き
+#-bullet ・
+#-more   
+#> format
+#>> call:箇条書き
+#-include 箇条書き
+#-cover
+{ def hndl ->
+	if (hndl.tagnum == 1) hndl.top = '【箇条書き：ここから】'
+	if (hndl.tagnum == hndl.tagtotal) hndl.btm = '【箇条書き：ここまで】'
+	hndl.bgn = '【項目：ここから】'
+	hndl.end = '【項目：ここまで】'
+	hndl.bullet = (hndl.level == 1)? '' : "\t"
+	hndl.more = (hndl.level == 1)? '' : "\t"
+	hndl.gap = (hndl.tagnum == hndl.tagtotal && hndl.level == 1)? System.lineSeparator() : ''
+	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+}

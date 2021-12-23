@@ -1,0 +1,28 @@
+#! clmap:format-subformat
+#> map:formatOperator
+#>> map:exist
+#>>> closure:subformat
+#>> map:conds
+#>>> config:subformat
+	import io.github.longfish801.tpac.TpacRefer
+	refer {
+		required = true
+		types = [ TpacRefer, null ]
+	}
+#>> map:visit
+#>>> dec
+#-subformat
+	import io.github.longfish801.switem.SwitemFormat
+	import io.github.longfish801.switem.SwitemMsg as msgs
+	import io.github.longfish801.tpac.TpacSemanticException
+#>>> closure:subformat
+	// referキーから下位のハンドルに適用する formatハンドルを初期化します
+	if (operator.refer == null){
+		operator.formatRefer = null
+		return
+	}
+	operator.formatRefer = operator.refer.refer()
+	if (!(operator.formatRefer instanceof SwitemFormat)){
+		throw new TpacSemanticException(String.format(msgs.exc.invalidKeyType, 'refer', operator.refer))
+	}
+#!

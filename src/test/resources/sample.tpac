@@ -1,0 +1,45 @@
+#! switem
+#> parse
+#>> enclose:pre
+#-bgn ```
+#>> indent:ul
+#-bullet - 
+#-more   
+#> format
+#>> replace:pre
+#-include pre
+World	Groovy
+#>> call:pre
+#-include pre
+#-cover
+{ def hndl ->
+	hndl.top = '<pre>'
+	hndl.btm = '</pre>'
+}
+#>> call:ul
+#-include ul
+#-cover
+{ def hndl ->
+	if (hndl.tagnum == 1) hndl.top = '<ul>'
+	if (hndl.tagnum == hndl.tagtotal) hndl.btm = '</ul>'
+	hndl.bgn = '<li>'
+	hndl.end = '</li>'
+	hndl.bullet = (hndl.level == 1)? '' : '  '
+	hndl.more = (hndl.level == 1)? '' : '  '
+	hndl.gap = ''
+	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+}
+#>> call:p
+#-include doc
+#-chunk
+{ def hndl ->
+	def lines = hndl.dflt.collect()
+	lines[0] = "<p>${lines[0]}"
+	lines[lines.size() - 1] = "${lines[lines.size() - 1]}</p>"
+	return lines
+}
+#>> call:br
+#-chunk
+{ def hndl ->
+	return hndl.dflt.join("<br/>${System.lineSeparator()}").split(System.lineSeparator())
+}

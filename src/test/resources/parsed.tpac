@@ -1,0 +1,64 @@
+#! doc
+#>
+
+#> chunk:1
+This is sample text.
+Please read this carefully.
+#>
+
+#> pre:1
+#-top ```
+#-btm ```
+#>
+
+#>> chunk:1
+println 'Hello, World!'
+println 'Hello, Groovy!'
+#>
+
+#> ul:1
+#-bullet - 
+#-more   
+#>
+
+#>> chunk:1
+List
+#>
+
+#>> ul:2
+#-bullet - 
+#-more   
+#>
+
+#>>> chunk:1
+Elem1
+Elem2
+#>
+
+#> ul:3
+#-bullet - 
+#-more   
+#>
+
+#>> chunk:1
+Map
+#>
+
+#>> ul:4
+#-bullet - 
+#>
+
+#>>> chunk:1
+Key
+#>
+
+#>> ul:5
+#-bullet - 
+#>
+
+#>>> chunk:1
+Value
+#>
+
+#!
+

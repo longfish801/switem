@@ -1,0 +1,66 @@
+#! clmap:parse-indent
+#> map:parseOperator
+#>> map:exist
+#>>> closure:indent
+#>> map:conds
+#>>> config:indent
+	import java.util.regex.Pattern
+	bullet {
+		required = true
+		types = [ String, Pattern ]
+	}
+	more {
+		types = [ String, Pattern ]
+	}
+#>> map:visit
+#>>> dec
+#-indent
+	import java.util.regex.Matcher
+	import java.util.regex.Pattern
+#>>> closure:indent
+	// bulletキーから先頭記号で始まるときインデントを返すクロージャを初期化します
+	switch (operator.bullet){
+		case String: operator.getIndent = { String line -> return (line.startsWith(operator.bullet))? operator.bullet : null }; break
+		case Pattern:
+			operator.getIndent = { String line ->
+				Matcher matcher = operator.bullet.matcher(line)
+				return (matcher.find())? matcher.group(0) : null
+			}
+			break
+	}
+	// moreキーから二行目以降が先頭記号で始まるときインデントを返すクロージャを初期化します
+	if (operator.more == null) operator.more = operator.bullet
+	switch (operator.more){
+		case String: operator.getIndentMore = { String line -> return (line.startsWith(operator.more))? operator.more : null }; break
+		case Pattern:
+			operator.getIndentMore = { String line ->
+				Matcher matcher = operator.more.matcher(line)
+				return (matcher.find())? matcher.group(0) : null
+			}
+			break
+	}
+#>> map:detectRange
+#>>> closure:indent
+	// 開始行でなければ終了します
+	if (operator.getIndent.call(lines[lineIdx]) == null) return size
+	// 終端行までの行数を求めます
+	for (int idx = lineIdx + 1; idx < lines.size(); idx ++){
+		if (operator.getIndentMore.call(lines[idx]) == null){
+			size = idx - lineIdx
+			break
+		}
+	}
+	if (size == 0) size = lines.size() - lineIdx
+#>> map:createCoverHandle
+#>>> dec
+#>>> closure:indent
+	String firstLine = lines.pop()
+	coverHandle.bullet = operator.getIndent.call(firstLine)
+	List newLines = [ firstLine.substring(coverHandle.bullet.length()) ]
+	lines.each { String line ->
+		String more = operator.getIndentMore.call(line)
+		if (coverHandle.more == null) coverHandle.more = more
+		newLines << line.substring(more.length())
+	}
+	operator.parseRecursive(coverHandle, newLines)
+#!

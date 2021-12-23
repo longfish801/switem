@@ -1,0 +1,48 @@
+#! doc
+#>
+
+#> column1:1
+#-top _===
+#-btm _===
+#>
+
+#>> item1:1
+#-bullet - 
+#>
+
+#>>> chunk:1
+Hello, World.
+#>
+
+#> column2:1
+#-top ---
+#-btm ---
+#>
+
+#>> item2:1
+#-bullet * 
+#>
+
+#>>> chunk:1
+Hello, Groovy.
+#>
+
+#> column3:1
+#-top ```
+#-btm ```
+#>
+
+#>> chunk:1
+- Hello, Java.
+#>
+
+#> item1:2
+#-bullet - 
+#>
+
+#>> chunk:1
+Bye, World.
+#>
+
+#!
+

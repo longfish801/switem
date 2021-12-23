@@ -1,0 +1,51 @@
+#! clmap:parse-oneline
+#> map:parseOperator
+#>> map:exist
+#>>> closure:oneline
+#>> map:conds
+#>>> config:oneline
+	import java.util.regex.Pattern
+	bullet {
+		types = [ String ]
+	}
+	pattern {
+		types = [ Pattern ]
+	}
+#>> map:visit
+#>>> dec
+#-oneline
+	import io.github.longfish801.switem.ParseException
+	import io.github.longfish801.switem.SwitemMsg as msgs
+#>>> closure:oneline
+	// 対象行か判定するクロージャを作成します
+	operator.isTarget = { String line ->
+		if (operator.bullet != null) return line.startsWith(operator.bullet)
+		if (operator.pattern != null) return (line ==~ /${operator.pattern}/)
+		// キーの指定が無い場合は例外を投げます
+		throw new ParseException(msgs.exc.noOnelineKey)
+	}
+#>> map:detectRange
+#>>> dec
+#-oneline
+	import io.github.longfish801.switem.ParseException
+	import io.github.longfish801.switem.SwitemMsg as msgs
+#>>> closure:oneline
+	return (operator.isTarget.call(lines[lineIdx]))? 1 : 0
+#>> map:createCoverHandle
+#>>> dec
+#-oneline
+	import io.github.longfish801.tpac.TpacHandle
+#>>> closure:oneline
+	String line = lines[0]
+	if (operator.bullet != null){
+		coverHandle.bullet = operator.bullet
+		line = line.substring(operator.bullet.length())
+	} else {
+		def matcher = (line =~ operator.pattern)
+		// グループ指定がなければマッチした全体を、あれば一番目のグループを取得します
+		line = (matcher[0] instanceof String)? matcher[0] : matcher[0][1]
+	}
+	TpacHandle chunkHandle = new TpacHandle(tag: 'chunk', name: '1')
+	chunkHandle._ = [ line ]
+	coverHandle << chunkHandle
+#!

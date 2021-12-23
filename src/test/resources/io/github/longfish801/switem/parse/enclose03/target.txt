@@ -1,0 +1,9 @@
+Hello, World.
+/-----
+Let's begin.
+/---
+Hello, Groovy.
+---/
+Let's end.
+-----/
+Bye, World.

@@ -1,0 +1,33 @@
+#! doc
+#>
+
+#> chunk:1
+Hello, World.
+#>
+
+#> blockquote:1
+#-bullet * 
+#-more   
+#>
+
+#>> chunk:1
+Hello, Groovy.
+Bye, Groovy.
+#>
+
+#> blockquote:2
+#-bullet * 
+#-more   
+#>
+
+#>> chunk:1
+Hi, Groovy.
+Bye, World.
+#>
+
+#> chunk:2
+Hi, World.
+#>
+
+#!
+

@@ -1,0 +1,92 @@
+#! clmap:tagdsl
+#> dec
+	import io.github.longfish801.tpac.tea.TeaHandle
+#> map:switem
+#: switem全般にかかわる処理です。
+#>> map:output
+#: 出力処理です。
+#: テキストハンドルを文字列に加工します。
+#: 下位のハンドルを再帰的に呼びます。
+#>>> args
+#: 出力用のWriterと、出力対象のテキストハンドルを渡します。
+	Writer writer
+	TeaHandle hndl
+#> map:parse
+#>> map:outRange
+#: すべてのparse操作ハンドルでも解析対象外となった行の扱いを決めます。
+#>>> dec
+	import io.github.longfish801.tpac.TpacHandle
+#>>> args
+#: 上位のカバーハンドル、解析対象外となった行のリスト、チャンクハンドルの通し番号を渡します。
+	TeaHandle coverHandle
+	List lines
+	int chunkNum
+#>>> return
+#: 作成したチャンクハンドルの個数分だけ加算した通し番号を返します。
+	chunkNum
+#> map:parseOperator
+#>> dec
+	import io.github.longfish801.switem.ParseOperator
+#>> map:exist
+#: parse操作ハンドルの存在確認に使用します。
+#: ハンドルのタグ名を、値の無いキーとして指定してください。
+#>> map:conds
+#: キーに指定する値の検査に必要な条件を定義します。
+#: 指定の仕方はio.github.longfish801.tpac.tea.TeaHandle#validateKeys(Map)のgroovydocを参照してください。
+#>> map:visit
+#: 必要に応じて初期化します。
+#: io.github.longfish801.tpac.tea.TeaHandle#visitに相当する処理です。
+#>>> args
+#: 操作ハンドルのインスタンスを渡します。
+	ParseOperator operator
+#>> map:detectRange
+#: 解析対象とする範囲を検出します。
+#>>> args
+#: 操作ハンドルのインスタンス、解析対象行のリスト、解析位置を渡します。
+	ParseOperator operator
+	List lines
+	int lineIdx
+#>>> prefix
+	int size = 0
+#>>> return
+#: lines[lineIdx]が解析対象の開始でなければ0を返してください。
+#: 解析対象の開始行であれば、終了行までの行数を返してください。
+	size
+#>> map:createCoverHandle
+#: カバーハンドルを作成します。
+#: カバーハンドルのインスタンスは作成済であり、引数として渡します。
+#: カバーハンドルにキーを設定したり、
+#: ParseOperator#parseRecursiveを読んで再帰的に下位の解析をしたりします。
+#>>> args
+#: 操作ハンドルのインスタンス、カバーハンドル、行リストを渡します。
+	ParseOperator operator
+	TeaHandle coverHandle
+	List lines
+#> map:formatOperator
+#>> dec
+	import io.github.longfish801.switem.FormatOperator
+#>> map:exist
+#: format操作ハンドルの存在確認に使用します。
+#: ハンドルのタグ名を、値の無いキーとして指定してください。
+#>> map:conds
+#: キーに指定する値の検査に必要な条件を定義します。
+#: 指定の仕方はio.github.longfish801.tpac.tea.TeaHandle#validateKeys(Map)のgroovydocを参照してください。
+#>> map:visit
+#: 必要に応じて初期化します。
+#: io.github.longfish801.tpac.tea.TeaHandle#visitに相当する処理です。
+#>>> args
+#: 操作ハンドルのインスタンスを渡します。
+	FormatOperator operator
+#>> map:formatCoverHandle
+#: カバーハンドルを整形します。
+#>>> args
+#: 操作ハンドルのインスタンスを渡します。
+	FormatOperator operator
+	TeaHandle coverHandle
+#>> map:formatChunkHandle
+#: チャンクハンドルを整形します。
+#>>> args
+#: 操作ハンドルのインスタンスを渡します。
+	FormatOperator operator
+	TeaHandle chunkHandle
+#!

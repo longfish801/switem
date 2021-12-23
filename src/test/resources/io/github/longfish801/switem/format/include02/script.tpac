@@ -1,0 +1,17 @@
+#! switem
+#> parse
+#>> enclose:column1
+#-bgn _---
+#>> enclose:column2
+#-bgn _===
+#>> enclose:column3
+#-bgn _```
+#> format
+#>> call:column13
+#-include
+column1
+column3
+#-chunk
+{ def hndl ->
+	return hndl.dflt.collect { "> ${it}" }
+}

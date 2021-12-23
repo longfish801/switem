@@ -1,0 +1,5 @@
+#! switem
+#> format
+#>> reprex
+H([\w+])	h$1
+W([\w+])	w$1

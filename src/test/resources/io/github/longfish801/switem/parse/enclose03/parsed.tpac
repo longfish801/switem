@@ -1,0 +1,35 @@
+#! doc
+#>
+
+#> chunk:1
+Hello, World.
+#>
+
+#> column:1
+#-top /-----
+#-btm -----/
+#>
+
+#>> chunk:1
+Let's begin.
+#>
+
+#>> column:2
+#-top /---
+#-btm ---/
+#>
+
+#>>> chunk:1
+Hello, Groovy.
+#>
+
+#>> chunk:2
+Let's end.
+#>
+
+#> chunk:2
+Bye, World.
+#>
+
+#!
+

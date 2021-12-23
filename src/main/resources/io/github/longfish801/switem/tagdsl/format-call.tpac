@@ -1,0 +1,40 @@
+#! clmap:format-call
+#> map:formatOperator
+#>> map:exist
+#>>> closure:call
+#>> map:conds
+#>>> config:call
+	import io.github.longfish801.tpac.TpacRefer
+	cover {
+		types = [ List, TpacRefer ]
+	}
+	chunk {
+		types = [ List, TpacRefer ]
+	}
+#>> map:visit
+#>>> dec
+#-call
+	import io.github.longfish801.switem.SwitemConst as cnst
+	import io.github.longfish801.tpac.TpacRefer
+#>>> closure:call
+	// coverキーからカバーハンドルを整形するクロージャを初期化します
+	if (operator.cover != null){
+		switch (operator.cover){
+			case List: operator.coverCl = operator.shell.evaluate(operator.cover.join(System.lineSeparator()), String.format(cnst.evalFname.cover, key)); break
+			case TpacRefer: operator.coverCl = operator.cover.refer(); break
+		}
+	}
+	// chunkキーからチャンクハンドルを整形するクロージャを初期化します
+	if (operator.chunk != null){
+		switch (operator.chunk){
+			case List: operator.chunkCl = operator.shell.evaluate(operator.chunk.join(System.lineSeparator()), String.format(cnst.evalFname.chunk, key)); break
+			case TpacRefer: operator.chunkCl = operator.chunk.refer(); break
+		}
+	}
+#>> map:formatCoverHandle
+#>>> closure:call
+	operator.coverCl?.call(coverHandle)
+#>> map:formatChunkHandle
+#>>> closure:call
+	if (operator.chunkCl != null) chunkHandle._ = operator.chunkCl.call(chunkHandle)
+#!

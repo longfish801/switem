@@ -213,7 +213,7 @@ println 'Hello, Groovy!'
 
 * [Groovydoc](groovydoc/)
 * [switem記法](notation.html)
-* [タグDSL](tagdsl.md)
+* [タグDSL](tagdsl.html)
 
 ## GitHubリポジトリ
 
@@ -234,3 +234,8 @@ dependencies {
 	implementation group: 'io.github.longfish801', name: 'switem', version: '0.3.00'
 }
 ```
+
+## 改版履歴
+
+0.0.01
+: ドキュメントはmavenリポジトリに出力するよう修正しました。

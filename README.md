@@ -210,5 +210,5 @@ This sample code is executed in the execSamples task, see build.gradle.
 
 ## Next Step
 
-Please see the [documents](https://longfish801.github.io/switem/) for more detail.
+Please see the [documents](https://longfish801.github.io/maven/switem/) for more detail.
 

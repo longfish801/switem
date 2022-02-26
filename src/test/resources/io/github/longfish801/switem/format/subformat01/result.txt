@@ -1,6 +1,5 @@
 ---
 1 Bye, Java.
-
 ===
 2 Hello, Groovy.
 ===
@@ -8,7 +7,6 @@
 
 ===
 3 Hi, Java.
-
 ---
 4 Hello, Java.
 ---

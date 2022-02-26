@@ -13,7 +13,7 @@
 ## 特徴
 
 * テキストを加工するスクリプトを switem記法で記述します。
-  switem記法は [tpac](/tpac/)を利用したDSLです。
+  switem記法は [tpac](/maven/tpac/)を利用したDSLです。
 * テキストの書式を差し替えることを目的としています。
   構造を大きく変えることは困難です。
   たとえば行の集約、並べ替えには対応していません。
@@ -55,8 +55,7 @@ World	Groovy
 	hndl.end = '</li>'
 	hndl.bullet = (hndl.level == 1)? '' : '  '
 	hndl.more = (hndl.level == 1)? '' : '  '
-	hndl.gap = ''
-	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+	hndl.nogap = true
 }
 #>> call:p
 #-include doc
@@ -117,6 +116,7 @@ println 'Hello, Groovy!'
 
 ```
 #! doc
+#-gap _
 #>
 
 #> chunk:1
@@ -179,7 +179,6 @@ Value
 #>
 
 #!
-
 ```
 
 　switem文書で上記のtpac文書を整形した結果です（src/test/resources/formatted.html）。
@@ -195,15 +194,15 @@ println 'Hello, Groovy!'
 
 <ul>
 <li>List
-  <ul>
+<ul>
   <li>Elem1<br/>
   Elem2</li>
-  </ul></li>
+</ul></li>
 <li>Map
-  <ul>
+<ul>
   <li>Key</li>
   <li>Value</li>
-  </ul></li>
+</ul></li>
 </ul>
 ```
 
@@ -239,3 +238,7 @@ dependencies {
 
 0.0.01
 : ドキュメントはmavenリポジトリに出力するよう修正しました。
+
+0.0.02
+: 出力処理にnogapキーを追加し、top, btmキーのList指定に対応しました。
+

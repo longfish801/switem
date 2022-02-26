@@ -1,4 +1,4 @@
-#! clmap:parse-oneline
+#! clmap:tagdsl
 #> map:parseOperator
 #>> map:exist
 #>>> closure:oneline

@@ -1,4 +1,4 @@
-#! clmap:parse-enclose
+#! clmap:tagdsl
 #> map:parseOperator
 #>> map:exist
 #>>> closure:enclose

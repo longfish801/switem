@@ -54,8 +54,7 @@ World	Groovy
 	hndl.end = '</li>'
 	hndl.bullet = (hndl.level == 1)? '' : '  '
 	hndl.more = (hndl.level == 1)? '' : '  '
-	hndl.gap = ''
-	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+	hndl.nogap = true
 }
 #>> call:p
 #-include doc
@@ -116,6 +115,7 @@ Here is a tpac document that parse the above text with switem document (src/test
 
 ```
 #! doc
+#-gap _
 #>
 
 #> chunk:1
@@ -178,7 +178,6 @@ Value
 #>
 
 #!
-
 ```
 
 Result of formatting the above tpac document with switem document (src/test/resources/formatted.html).
@@ -194,15 +193,15 @@ println 'Hello, Groovy!'
 
 <ul>
 <li>List
-  <ul>
+<ul>
   <li>Elem1<br/>
   Elem2</li>
-  </ul></li>
+</ul></li>
 <li>Map
-  <ul>
+<ul>
   <li>Key</li>
   <li>Value</li>
-  </ul></li>
+</ul></li>
 </ul>
 ```
 

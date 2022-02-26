@@ -43,11 +43,7 @@ class SwitemServer implements TeaServer, GropedResource {
 			LOG.debug('soak for tagdsl:path={}', it)
 			server.soak(grope(it))
 		}
-		tagdslClmap = server.cl('/tagdsl')
-		server.decs.each { String key, Clmap clmap ->
-			if (key != 'clmap') tagdslClmap += clmap
-		}
-		return tagdslClmap
+		return server.cl('/tagdsl')
 	}
 	
 	/**

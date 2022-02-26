@@ -26,8 +26,7 @@ World	Groovy
 	hndl.end = '</li>'
 	hndl.bullet = (hndl.level == 1)? '' : '  '
 	hndl.more = (hndl.level == 1)? '' : '  '
-	hndl.gap = ''
-	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+	hndl.nogap = true
 }
 #>> call:p
 #-include doc

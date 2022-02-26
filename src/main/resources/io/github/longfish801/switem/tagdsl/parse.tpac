@@ -1,4 +1,4 @@
-#! clmap:parse
+#! clmap:tagdsl
 #> map:parse
 #>> map:outRange
 #>>> closure:para

@@ -160,5 +160,6 @@ class SwitemSpec extends Specification implements GropedResource {
 		'format'	| 'subformat01'	// subformat
 		'format'	| 'indent01'	// 箇条書きの整形
 		'format'	| 'indent02'	// 複雑な箇条書きの整形
+		'format'	| 'indent03'	// tpp, btm List指定
 	}
 }

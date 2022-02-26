@@ -89,6 +89,7 @@ class Switem implements TeaDec {
 			// 解析します
 			List lines = reader.readLines()
 			TeaDec dec = new TpacDec(tag: 'doc')
+			dec.gap = ''
 			if (solvePath('parse') == null){
 				// parseタグが未定の場合は追加します
 				TeaHandle parseHndl = maker.newTeaHandle('parse', '_', this)

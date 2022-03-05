@@ -32,9 +32,9 @@ class SwitemFormatSpec extends Specification {
 		
 		when:
 		chunkHandleA = new TpacHandle(tag: 'chunk', name: '1')
-		chunkHandleA._ = [ 'a', 'a', 'a' ]
+		chunkHandleA.dflt = [ 'a', 'a', 'a' ]
 		chunkHandleB = new TpacHandle(tag: 'chunk', name: '2')
-		chunkHandleB._ = [ 'b', 'b', 'b' ]
+		chunkHandleB.dflt = [ 'b', 'b', 'b' ]
 		coverHandle = new TpacHandle(tag: 'some')
 		coverHandle << chunkHandleA
 		coverHandle << chunkHandleB

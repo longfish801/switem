@@ -242,3 +242,5 @@ dependencies {
 0.0.02
 : 出力処理にnogapキーを追加し、top, btmキーのList指定に対応しました。
 
+0.0.03
+: tpac 0.3.12とclmap 0.3.06に対応しました。

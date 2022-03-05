@@ -107,7 +107,7 @@ class SwitemSpec extends Specification implements GropedResource {
 			Switem switem = new SwitemServer().soak(grope("${tag}/${detail}/script.tpac")).switem
 			switem.parsedWriter = new StringWriter()
 			switem.run(toString("${tag}/${detail}/target.txt"))
-			return switem.parsedWriter.toString()
+			return switem.parsedWriter.toString().normalize()
 		}
 		
 		expect:
@@ -140,7 +140,7 @@ class SwitemSpec extends Specification implements GropedResource {
 			switem.parsedWriter = new StringWriter()
 			String result = switem.run(toString("${tag}/${detail}/target.txt"))
 			LOG.info("${tag} ${detail} : ${switem.parsedWriter.toString()}")
-			return result
+			return result.normalize()
 		}
 		
 		expect:

@@ -1,4 +1,4 @@
-﻿# switem
+# switem
 
 ## Overview
 

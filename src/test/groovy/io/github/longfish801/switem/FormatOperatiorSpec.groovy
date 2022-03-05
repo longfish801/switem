@@ -99,7 +99,7 @@ class FormatOperatiorSpec extends Specification {
 		operator.chunkCl = { def hndl -> return hndl.dflt.collect { "> ${it}" } }
 		TeaHandle coverHandle = new TpacHandle(tag: 'cover')
 		TeaHandle chunkHandle = new TpacHandle(tag: 'chunk')
-		chunkHandle._ = [ 'aaa' ]
+		chunkHandle.dflt = [ 'aaa' ]
 		coverHandle << chunkHandle
 		
 		when:

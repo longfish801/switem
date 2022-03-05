@@ -36,5 +36,5 @@
 	operator.coverCl?.call(coverHandle)
 #>> map:formatChunkHandle
 #>>> closure:call
-	if (operator.chunkCl != null) chunkHandle._ = operator.chunkCl.call(chunkHandle)
+	if (operator.chunkCl != null) chunkHandle.dflt = operator.chunkCl.call(chunkHandle)
 #!

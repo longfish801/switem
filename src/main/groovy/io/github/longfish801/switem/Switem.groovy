@@ -92,9 +92,9 @@ class Switem implements TeaDec {
 			dec.gap = ''
 			if (solvePath('parse') == null){
 				// parseタグが未定の場合は追加します
-				TeaHandle parseHndl = maker.newTeaHandle('parse', '_', this)
+				TeaHandle parseHndl = maker.newTeaHandle('parse', 'dflt', this)
 				parseHndl.tag = 'parse'
-				parseHndl.name = '_'
+				parseHndl.name = 'dflt'
 				this << parseHndl
 				parseHndl.validate()
 				parseHndl.visit()
@@ -111,7 +111,7 @@ class Switem implements TeaDec {
 			solvePath('format')?.format(dec)
 			
 			// 出力します
-			writer.withWriter { Writer wrtr -> tagdsl.cl('output#_').call(wrtr, dec) }
+			writer.withWriter { Writer wrtr -> tagdsl.cl('output#dflt').call(wrtr, dec) }
 		} catch (exc){
 			throw new SwitemRuntimeException(String.format(msgs.exc.faileScript, key), exc)
 		}

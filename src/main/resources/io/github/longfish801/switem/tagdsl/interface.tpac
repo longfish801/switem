@@ -46,12 +46,12 @@
 	ParseOperator operator
 	List lines
 	int lineIdx
-#>>> prefix
-	int size = 0
 #>>> return
 #: lines[lineIdx]が解析対象の開始でなければ0を返してください。
 #: 解析対象の開始行であれば、終了行までの行数を返してください。
-	size
+	int size
+#>>> prefix
+	size = 0
 #>> map:createCoverHandle
 #: カバーハンドルを作成します。
 #: カバーハンドルのインスタンスは作成済であり、引数として渡します。

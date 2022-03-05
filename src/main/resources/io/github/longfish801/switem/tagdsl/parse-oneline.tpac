@@ -46,6 +46,6 @@
 		line = (matcher[0] instanceof String)? matcher[0] : matcher[0][1]
 	}
 	TpacHandle chunkHandle = new TpacHandle(tag: 'chunk', name: '1')
-	chunkHandle._ = [ line ]
+	chunkHandle.dflt = [ line ]
 	coverHandle << chunkHandle
 #!

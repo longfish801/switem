@@ -56,7 +56,7 @@ class FormatCallSpec extends Specification {
 			#>> closure:bye
 				return "Bye ${name}"
 			'''.stripIndent()
-		clmap = new ClmapServer().soak(clmapScript).cl('/_/_')
+		clmap = new ClmapServer().soak(clmapScript).cl('/dflt/dflt')
 		operator.cover = TpacRefer.newInstance(clmap, 'closure:hello')
 		operator.chunk = TpacRefer.newInstance(clmap, 'closure:bye')
 		operator.tagdsl.cl("visit#call").call(operator)
@@ -72,7 +72,7 @@ class FormatCallSpec extends Specification {
 		
 		when:
 		chunkHandle = new TpacHandle(tag: 'chunk', name: '1')
-		chunkHandle._ = [ 'a', 'b', 'c' ]
+		chunkHandle.dflt = [ 'a', 'b', 'c' ]
 		coverHandle = new TpacHandle(tag: 'test')
 		coverHandle << chunkHandle
 		operator.formatTextHandle(coverHandle)
@@ -81,7 +81,7 @@ class FormatCallSpec extends Specification {
 		
 		when:
 		chunkHandle = new TpacHandle(tag: 'chunk', name: '1')
-		chunkHandle._ = [ 'a', 'b', 'c' ]
+		chunkHandle.dflt = [ 'a', 'b', 'c' ]
 		coverHandle = new TpacHandle(tag: 'test')
 		coverHandle << chunkHandle
 		operator.chunkCl = { def hndl -> return [ hndl.dflt.join("-") ] }

@@ -43,7 +43,7 @@ class SwitemFormatSpec extends Specification {
 		switemFormat << operator
 		switemFormat.format(coverHandle)
 		then:
-		coverHandle.solvePath('chunk:1').dflt == [ 'a-a-a' ]
-		coverHandle.solvePath('chunk:2').dflt == [ 'b-b-b' ]
+		coverHandle.solve('chunk:1').dflt == [ 'a-a-a' ]
+		coverHandle.solve('chunk:2').dflt == [ 'b-b-b' ]
 	}
 }

@@ -38,7 +38,7 @@ class SwitemParseSpec extends Specification {
 		switemParse.parse(coverHandle, [ 'aaa', 'bbb', 'ccc' ])
 		then:
 		coverHandle.lowers.keySet() as List == [ 'chunk:1' ]
-		coverHandle.solvePath('chunk:1').dflt == [ 'aaa', 'bbb', 'ccc' ]
+		coverHandle.solve('chunk:1').dflt == [ 'aaa', 'bbb', 'ccc' ]
 		
 		when:
 		switemParse.visit()
@@ -46,9 +46,9 @@ class SwitemParseSpec extends Specification {
 		switemParse.parse(coverHandle, [ '', 'aaa', '', 'bbb', '', '', 'ccc', '' ])
 		then:
 		coverHandle.lowers.keySet() as List == [ 'chunk:1', 'chunk:2', 'chunk:3' ]
-		coverHandle.solvePath('chunk:1').dflt == [ 'aaa' ]
-		coverHandle.solvePath('chunk:2').dflt == [ 'bbb' ]
-		coverHandle.solvePath('chunk:3').dflt == [ 'ccc' ]
+		coverHandle.solve('chunk:1').dflt == [ 'aaa' ]
+		coverHandle.solve('chunk:2').dflt == [ 'bbb' ]
+		coverHandle.solve('chunk:3').dflt == [ 'ccc' ]
 		
 		when:
 		parseEnclose = new ParseOperator(tag: 'enclose', name:'enc', tagdsl: new SwitemServer().tagdsl.cl('parseOperator'))
@@ -59,15 +59,15 @@ class SwitemParseSpec extends Specification {
 		switemParse.parse(coverHandle, [ 'aaa', '---', 'bbb', '---', '---', 'ccc', '---', 'ddd' ])
 		then:
 		coverHandle.lowers.keySet() as List == [ 'chunk:1', 'enc:1', 'enc:2', 'chunk:2' ]
-		coverHandle.solvePath('chunk:1').dflt == [ 'aaa' ]
-		coverHandle.solvePath('enc:1').top == '---'
-		coverHandle.solvePath('enc:1').btm == '---'
-		coverHandle.solvePath('enc:1').lowers.keySet() as List == [ 'chunk:1' ]
-		coverHandle.solvePath('enc:1/chunk:1').dflt == [ 'bbb' ]
-		coverHandle.solvePath('enc:2').top == '---'
-		coverHandle.solvePath('enc:2').btm == '---'
-		coverHandle.solvePath('enc:2').lowers.keySet() as List == [ 'chunk:1' ]
-		coverHandle.solvePath('enc:2/chunk:1').dflt == [ 'ccc' ]
-		coverHandle.solvePath('chunk:2').dflt == [ 'ddd' ]
+		coverHandle.solve('chunk:1').dflt == [ 'aaa' ]
+		coverHandle.solve('enc:1').top == '---'
+		coverHandle.solve('enc:1').btm == '---'
+		coverHandle.solve('enc:1').lowers.keySet() as List == [ 'chunk:1' ]
+		coverHandle.solve('enc:1/chunk:1').dflt == [ 'bbb' ]
+		coverHandle.solve('enc:2').top == '---'
+		coverHandle.solve('enc:2').btm == '---'
+		coverHandle.solve('enc:2').lowers.keySet() as List == [ 'chunk:1' ]
+		coverHandle.solve('enc:2/chunk:1').dflt == [ 'ccc' ]
+		coverHandle.solve('chunk:2').dflt == [ 'ddd' ]
 	}
 }

@@ -77,7 +77,7 @@ class FormatCallSpec extends Specification {
 		coverHandle << chunkHandle
 		operator.formatTextHandle(coverHandle)
 		then:
-		coverHandle.solvePath('chunk:1').dflt == [ 'a', 'b', 'c' ]
+		coverHandle.solve('chunk:1').dflt == [ 'a', 'b', 'c' ]
 		
 		when:
 		chunkHandle = new TpacHandle(tag: 'chunk', name: '1')
@@ -87,7 +87,7 @@ class FormatCallSpec extends Specification {
 		operator.chunkCl = { def hndl -> return [ hndl.dflt.join("-") ] }
 		operator.formatTextHandle(coverHandle)
 		then:
-		coverHandle.solvePath('chunk:1').dflt == [ 'a-b-c' ]
+		coverHandle.solve('chunk:1').dflt == [ 'a-b-c' ]
 		
 		when:
 		coverHandle = new TpacHandle(tag: 'some')

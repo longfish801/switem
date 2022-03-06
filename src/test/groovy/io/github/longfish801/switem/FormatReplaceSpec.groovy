@@ -51,6 +51,6 @@ class FormatReplaceSpec extends Specification {
 		operator.repMap = [ hello: 'bye', right: 'left' ]
 		operator.formatTextHandle(coverHandle)
 		then:
-		coverHandle.solvePath('chunk').dflt == [ 'bye world.', 'bye left world.' ]
+		coverHandle.solve('chunk').dflt == [ 'bye world.', 'bye left world.' ]
 	}
 }

@@ -29,7 +29,7 @@ class ParseOperator implements TeaHandle {
 	@Override
 	void validate(){
 		validateKeys(cnst.conds.parseCmn)
-		ConfigObject conds = tagdsl.solvePath("map:conds/config:${tag}")?.config()
+		ConfigObject conds = tagdsl.solve("map:conds/config:${tag}")?.config()
 		if (conds != null) validateKeys(conds)
 	}
 	

@@ -56,6 +56,6 @@ class FormatReprexSpec extends Specification {
 		operator.repMap[Pattern.compile(/right/, Pattern.MULTILINE)] = /left/
 		operator.formatTextHandle(coverHandle)
 		then:
-		coverHandle.solvePath('chunk').dflt == [ 'Hello world.', 'Hey-ho left world!' ]
+		coverHandle.solve('chunk').dflt == [ 'Hello world.', 'Hey-ho left world!' ]
 	}
 }

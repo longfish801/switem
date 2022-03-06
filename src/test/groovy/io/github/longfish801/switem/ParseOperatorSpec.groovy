@@ -88,7 +88,7 @@ class ParseOperatorSpec extends Specification {
 		coverHandle.top == '---'
 		coverHandle.btm == '---'
 		coverHandle.lowers.keySet() as List == [ 'chunk:1' ]
-		coverHandle.solvePath('chunk:1').dflt == [ 'bbb' ]
+		coverHandle.solve('chunk:1').dflt == [ 'bbb' ]
 	}
 	
 	def 'parseRecursive'(){
@@ -104,7 +104,7 @@ class ParseOperatorSpec extends Specification {
 		operator.parseRecursive(coverHandle, [ 'bbb' ])
 		then:
 		coverHandle.lowers.keySet() as List == [ 'chunk:1' ]
-		coverHandle.solvePath('chunk:1').dflt ==[ 'bbb' ]
+		coverHandle.solve('chunk:1').dflt ==[ 'bbb' ]
 		
 		when:
 		operator.bgn = '---'
@@ -115,7 +115,7 @@ class ParseOperatorSpec extends Specification {
 		operator.parseRecursive(coverHandle, [ '---', 'aaa', '---' ])
 		then:
 		coverHandle.lowers.keySet() as List == [ 'enc:1' ]
-		coverHandle.solvePath('enc:1').lowers.keySet() as List == [ 'chunk:1' ]
-		coverHandle.solvePath('enc:1/chunk:1').dflt == [ 'aaa' ]
+		coverHandle.solve('enc:1').lowers.keySet() as List == [ 'chunk:1' ]
+		coverHandle.solve('enc:1/chunk:1').dflt == [ 'aaa' ]
 	}
 }

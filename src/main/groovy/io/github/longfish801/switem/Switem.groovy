@@ -90,7 +90,7 @@ class Switem implements TeaDec {
 			List lines = reader.readLines()
 			TeaDec dec = new TpacDec(tag: 'doc')
 			dec.gap = ''
-			if (solvePath('parse') == null){
+			if (solve('parse') == null){
 				// parseタグが未定の場合は追加します
 				TeaHandle parseHndl = maker.newTeaHandle('parse', 'dflt', this)
 				parseHndl.tag = 'parse'
@@ -99,7 +99,7 @@ class Switem implements TeaDec {
 				parseHndl.validate()
 				parseHndl.visit()
 			}
-			solvePath('parse').parse(dec, lines)
+			solve('parse').parse(dec, lines)
 			
 			// 解析結果を出力します
 			if (parsedWriter != null) dec.write(parsedWriter)
@@ -108,7 +108,7 @@ class Switem implements TeaDec {
 			numbering(dec)
 			
 			// 整形します
-			solvePath('format')?.format(dec)
+			solve('format')?.format(dec)
 			
 			// 出力します
 			writer.withWriter { Writer wrtr -> tagdsl.cl('output#dflt').call(wrtr, dec) }

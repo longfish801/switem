@@ -40,11 +40,11 @@ class SwitemSpec extends Specification implements GropedResource {
 		coverHandle << chunkHandle1
 		Switem.numbering(coverHandle)
 		then:
-		coverHandle.solvePath('chunk:1').tag == 'chunk'
-		coverHandle.solvePath('chunk:1').num == 1
-		coverHandle.solvePath('chunk:1').total == 1
-		coverHandle.solvePath('chunk:1').tagnum == 1
-		coverHandle.solvePath('chunk:1').tagtotal == 1
+		coverHandle.solve('chunk:1').tag == 'chunk'
+		coverHandle.solve('chunk:1').num == 1
+		coverHandle.solve('chunk:1').total == 1
+		coverHandle.solve('chunk:1').tagnum == 1
+		coverHandle.solve('chunk:1').tagtotal == 1
 		
 		when:
 		coverHandle = new TpacHandle(tag: 'cover')
@@ -66,38 +66,38 @@ class SwitemSpec extends Specification implements GropedResource {
 		coverHandle1 << coverHandle11
 		Switem.numbering(coverHandle)
 		then:
-		coverHandle.solvePath('cover:1').num == 1
-		coverHandle.solvePath('cover:1').total == 5
-		coverHandle.solvePath('cover:1').tagnum == 1
-		coverHandle.solvePath('cover:1').tagtotal == 1
-		coverHandle.solvePath('chunk:1').num == 2
-		coverHandle.solvePath('chunk:1').total == 5
-		coverHandle.solvePath('chunk:1').tagnum == 1
-		coverHandle.solvePath('chunk:1').tagtotal == 2
-		coverHandle.solvePath('chunk:2').num == 3
-		coverHandle.solvePath('chunk:2').total == 5
-		coverHandle.solvePath('chunk:2').tagnum == 2
-		coverHandle.solvePath('chunk:2').tagtotal == 2
-		coverHandle.solvePath('cover:2').num == 4
-		coverHandle.solvePath('cover:2').total == 5
-		coverHandle.solvePath('cover:2').tagnum == 1
-		coverHandle.solvePath('cover:2').tagtotal == 1
-		coverHandle.solvePath('chunk:3').num == 5
-		coverHandle.solvePath('chunk:3').total == 5
-		coverHandle.solvePath('chunk:3').tagnum == 1
-		coverHandle.solvePath('chunk:3').tagtotal == 1
-		coverHandle.solvePath('cover:1/chunk:11').num == 1
-		coverHandle.solvePath('cover:1/chunk:11').total == 3
-		coverHandle.solvePath('cover:1/chunk:11').tagnum == 1
-		coverHandle.solvePath('cover:1/chunk:11').tagtotal == 2
-		coverHandle.solvePath('cover:1/chunk:12').num == 2
-		coverHandle.solvePath('cover:1/chunk:12').total == 3
-		coverHandle.solvePath('cover:1/chunk:12').tagnum == 2
-		coverHandle.solvePath('cover:1/chunk:12').tagtotal == 2
-		coverHandle.solvePath('cover:1/cover:11').num == 3
-		coverHandle.solvePath('cover:1/cover:11').total == 3
-		coverHandle.solvePath('cover:1/cover:11').tagnum == 1
-		coverHandle.solvePath('cover:1/cover:11').tagtotal == 1
+		coverHandle.solve('cover:1').num == 1
+		coverHandle.solve('cover:1').total == 5
+		coverHandle.solve('cover:1').tagnum == 1
+		coverHandle.solve('cover:1').tagtotal == 1
+		coverHandle.solve('chunk:1').num == 2
+		coverHandle.solve('chunk:1').total == 5
+		coverHandle.solve('chunk:1').tagnum == 1
+		coverHandle.solve('chunk:1').tagtotal == 2
+		coverHandle.solve('chunk:2').num == 3
+		coverHandle.solve('chunk:2').total == 5
+		coverHandle.solve('chunk:2').tagnum == 2
+		coverHandle.solve('chunk:2').tagtotal == 2
+		coverHandle.solve('cover:2').num == 4
+		coverHandle.solve('cover:2').total == 5
+		coverHandle.solve('cover:2').tagnum == 1
+		coverHandle.solve('cover:2').tagtotal == 1
+		coverHandle.solve('chunk:3').num == 5
+		coverHandle.solve('chunk:3').total == 5
+		coverHandle.solve('chunk:3').tagnum == 1
+		coverHandle.solve('chunk:3').tagtotal == 1
+		coverHandle.solve('cover:1/chunk:11').num == 1
+		coverHandle.solve('cover:1/chunk:11').total == 3
+		coverHandle.solve('cover:1/chunk:11').tagnum == 1
+		coverHandle.solve('cover:1/chunk:11').tagtotal == 2
+		coverHandle.solve('cover:1/chunk:12').num == 2
+		coverHandle.solve('cover:1/chunk:12').total == 3
+		coverHandle.solve('cover:1/chunk:12').tagnum == 2
+		coverHandle.solve('cover:1/chunk:12').tagtotal == 2
+		coverHandle.solve('cover:1/cover:11').num == 3
+		coverHandle.solve('cover:1/cover:11').total == 3
+		coverHandle.solve('cover:1/cover:11').tagnum == 1
+		coverHandle.solve('cover:1/cover:11').tagtotal == 1
 	}
 	
 	@Unroll

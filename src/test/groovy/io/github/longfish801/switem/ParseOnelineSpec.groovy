@@ -103,7 +103,7 @@ class ParseOnelineSpec extends Specification {
 		operator.tagdsl.cl('createCoverHandle#oneline').call(operator, coverHandle, ['# abc'])
 		then:
 		coverHandle.bullet == '# '
-		coverHandle.solvePath('chunk:1').dflt == [ 'abc' ]
+		coverHandle.solve('chunk:1').dflt == [ 'abc' ]
 		
 		when:
 		operator.bullet = null
@@ -112,7 +112,7 @@ class ParseOnelineSpec extends Specification {
 		coverHandle = new TpacHandle(tag: 'parse')
 		operator.tagdsl.cl('createCoverHandle#oneline').call(operator, coverHandle, ['[abc]'])
 		then:
-		coverHandle.solvePath('chunk:1').dflt == [ '[abc]' ]
+		coverHandle.solve('chunk:1').dflt == [ '[abc]' ]
 		
 		when:
 		operator.bullet = null
@@ -121,6 +121,6 @@ class ParseOnelineSpec extends Specification {
 		coverHandle = new TpacHandle(tag: 'parse')
 		operator.tagdsl.cl('createCoverHandle#oneline').call(operator, coverHandle, ['[abc]'])
 		then:
-		coverHandle.solvePath('chunk:1').dflt == [ 'abc' ]
+		coverHandle.solve('chunk:1').dflt == [ 'abc' ]
 	}
 }

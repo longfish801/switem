@@ -34,7 +34,7 @@ class FormatOperator implements TeaHandle {
 	@Override
 	void validate(){
 		validateKeys(cnst.conds.formatCmn)
-		ConfigObject conds = tagdsl.solvePath("map:conds/config:${tag}")?.config()
+		ConfigObject conds = tagdsl.solve("map:conds/config:${tag}")?.config()
 		if (conds != null) validateKeys(conds)
 	}
 	

@@ -108,6 +108,6 @@ class FormatOperatiorSpec extends Specification {
 		operator.formatTextHandle(coverHandle)
 		then:
 		coverHandle.bgn == '---'
-		coverHandle.solvePath('chunk').dflt == [ '> aaa' ]
+		coverHandle.solve('chunk').dflt == [ '> aaa' ]
 	}
 }

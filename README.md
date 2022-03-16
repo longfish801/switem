@@ -88,7 +88,8 @@ try {
 	assert html == switem.run(text).normalize()
 	assert tpac == switem.parsedWriter.toString().normalize()
 } catch (exc){
-	exc.printStackTrace()
+	println "Failed to run: ${exc.message}"
+	throw exc
 }
 ```
 

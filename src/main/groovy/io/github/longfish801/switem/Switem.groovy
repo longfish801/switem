@@ -16,7 +16,6 @@ import io.github.longfish801.tpac.tea.TeaHandle
 
 /**
  * switem文書に基づき文字列を変換します。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 @Slf4j('LOG')

@@ -13,7 +13,6 @@ import spock.lang.Specification
 
 /**
  * ParseOperatorのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class ParseOperatorSpec extends Specification {

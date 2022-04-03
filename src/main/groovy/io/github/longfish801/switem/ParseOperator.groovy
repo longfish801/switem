@@ -12,7 +12,6 @@ import io.github.longfish801.tpac.tea.TeaHandle
 
 /**
  * parseハンドルの下位ハンドルです。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class ParseOperator implements TeaHandle {

@@ -5,7 +5,7 @@
  */
 
 plugins {
-	id 'com.github.monosoul.markdown.page.generator' version '2.1.0'
+	id 'com.github.monosoul.markdown.page.generator' version '2.3.1.1'
 	id 'jacoco'
 }
 
@@ -18,13 +18,14 @@ apply plugin: 'maven-publish'
 
 defaultTasks 'fix'
 group = 'io.github.longfish801'
-version = '0.1.00'
+version = '1.0.00'
 
 // 環境変数からローカルのmavenリポジトリへのパスを取得します
 String mavenPath = System.env['MAVEN_PATH']
 if (mavenPath == null || mavenPath.empty){
 	throw new Exception('Environment variables MAVEN_PATH is required.')
 }
+mavenPath += '/docs'
 
 repositories {
 	mavenCentral()
@@ -32,9 +33,9 @@ repositories {
 }
 
 dependencies {
-	implementation group: 'io.github.longfish801', name: 'clmap', version: '0.4.00'
-	implementation group: 'io.github.longfish801', name: 'gonfig', version: '0.2.00'
-	implementation group: 'io.github.longfish801', name: 'tpac', version: '0.4.00'
+	implementation group: 'io.github.longfish801', name: 'clmap', version: '1.0.00'
+	implementation group: 'io.github.longfish801', name: 'gonfig', version: '1.0.00'
+	implementation group: 'io.github.longfish801', name: 'tpac', version: '1.0.00'
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
 	implementation group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.5.10'
 	implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
@@ -79,7 +80,7 @@ publishing {
 
 // サンプルを実行します
 task execSamples(type: JavaExec) {
-	main = 'Sample'
+	mainClass = 'Sample'
 	classpath = sourceSets.test.runtimeClasspath
 }
 

@@ -18,7 +18,6 @@ import spock.lang.Unroll
 
 /**
  * SwitemMakerのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class SwitemMakerSpec extends Specification implements GropedResource {

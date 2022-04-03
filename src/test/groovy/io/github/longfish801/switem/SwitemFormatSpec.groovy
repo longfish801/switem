@@ -12,7 +12,6 @@ import spock.lang.Specification
 
 /**
  * SwitemFormatのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class SwitemFormatSpec extends Specification {

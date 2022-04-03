@@ -2,8 +2,8 @@
 
 ## Overview
 
-Switch template of text.  
-Execute a script, which parse, format, and switch to new form for text.
+Switches text formatting.  
+Run scripts to extract and process specific ranges of text.
 
 This is individual development, for self-learning.  
 No support such as troubleshooting, answering inquiries, and so on.
@@ -11,7 +11,7 @@ No support such as troubleshooting, answering inquiries, and so on.
 ## Features
 
 * Describe text processing scripts with switem notation.  
-  The switem notation is a DSL using [tpac](/tpac/).
+  The switem notation is a DSL using [tpac](/maven/tpac/).
 
 * The purpose is to replace the formatting of the text.  
   It is difficult to change the structure significantly.  

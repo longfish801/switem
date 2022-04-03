@@ -14,7 +14,6 @@ import spock.lang.Specification
 
 /**
  * reprexハンドルのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class FormatReprexSpec extends Specification {

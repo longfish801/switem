@@ -14,7 +14,6 @@ import spock.lang.Specification
 
 /**
  * subformatハンドルのテスト。
- * @version 0.1.00 2021/11/18
  * @author io.github.longfish801
  */
 class FormatSubformatSpec extends Specification {

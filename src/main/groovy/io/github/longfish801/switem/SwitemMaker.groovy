@@ -15,7 +15,6 @@ import io.github.longfish801.tpac.tea.TeaMaker
 
 /**
  * switem記法の文字列の解析にともない、各要素を生成します。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class SwitemMaker implements TeaMaker {

@@ -13,7 +13,6 @@ import spock.lang.Specification
 
 /**
  * replaceハンドルのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class FormatReplaceSpec extends Specification {
@@ -26,13 +25,13 @@ class FormatReplaceSpec extends Specification {
 	
 	def 'visit'(){
 		when:
-		operator._ = [ "hello\tbye", "right\tleft" ]
+		operator.dflt = [ "hello\tbye", "right\tleft" ]
 		operator.tagdsl.cl("visit#replace").call(operator)
 		then:
 		operator.repMap == [ hello: 'bye', right: 'left' ]
 		
 		when: 'タブを含まない行は無視します'
-		operator._ = [ "hello", "right\tleft" ]
+		operator.dflt = [ "hello", "right\tleft" ]
 		operator.tagdsl.cl("visit#replace").call(operator)
 		then:
 		operator.repMap == [ right: 'left' ]
@@ -45,12 +44,12 @@ class FormatReplaceSpec extends Specification {
 		
 		when:
 		chunkHandle = new TpacHandle(tag: 'chunk')
-		chunkHandle._ = [ 'hello world.', 'hello right world.' ]
+		chunkHandle.dflt = [ 'hello world.', 'hello right world.' ]
 		coverHandle = new TpacHandle(tag: 'test')
 		coverHandle << chunkHandle
 		operator.repMap = [ hello: 'bye', right: 'left' ]
 		operator.formatTextHandle(coverHandle)
 		then:
-		coverHandle.solvePath('chunk').dflt == [ 'bye world.', 'bye left world.' ]
+		coverHandle.solve('chunk').dflt == [ 'bye world.', 'bye left world.' ]
 	}
 }

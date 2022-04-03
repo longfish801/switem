@@ -12,7 +12,6 @@ import spock.lang.Specification
 
 /**
  * SwitemFormatのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class SwitemFormatSpec extends Specification {
@@ -32,9 +31,9 @@ class SwitemFormatSpec extends Specification {
 		
 		when:
 		chunkHandleA = new TpacHandle(tag: 'chunk', name: '1')
-		chunkHandleA._ = [ 'a', 'a', 'a' ]
+		chunkHandleA.dflt = [ 'a', 'a', 'a' ]
 		chunkHandleB = new TpacHandle(tag: 'chunk', name: '2')
-		chunkHandleB._ = [ 'b', 'b', 'b' ]
+		chunkHandleB.dflt = [ 'b', 'b', 'b' ]
 		coverHandle = new TpacHandle(tag: 'some')
 		coverHandle << chunkHandleA
 		coverHandle << chunkHandleB
@@ -43,7 +42,7 @@ class SwitemFormatSpec extends Specification {
 		switemFormat << operator
 		switemFormat.format(coverHandle)
 		then:
-		coverHandle.solvePath('chunk:1').dflt == [ 'a-a-a' ]
-		coverHandle.solvePath('chunk:2').dflt == [ 'b-b-b' ]
+		coverHandle.solve('chunk:1').dflt == [ 'a-a-a' ]
+		coverHandle.solve('chunk:2').dflt == [ 'b-b-b' ]
 	}
 }

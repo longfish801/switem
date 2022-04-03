@@ -11,7 +11,6 @@ import io.github.longfish801.tpac.tea.TeaHandle
 
 /**
  * formatハンドルです。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 @Slf4j('LOG')

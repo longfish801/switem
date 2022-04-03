@@ -9,7 +9,6 @@ import io.github.longfish801.gonfig.Gonfig
 
 /**
  * 固定値を保持します。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class SwitemConst implements Gonfig {

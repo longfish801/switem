@@ -14,7 +14,6 @@ import spock.lang.Specification
 
 /**
  * reprexハンドルのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class FormatReprexSpec extends Specification {
@@ -27,14 +26,14 @@ class FormatReprexSpec extends Specification {
 	
 	def 'visit'(){
 		when:
-		operator._ = [ /(h\w+o)	bye/, /right	left/ ]
+		operator.dflt = [ /(h\w+o)	bye/, /right	left/ ]
 		operator.tagdsl.cl("visit#reprex").call(operator)
 		then:
 		operator.repMap.keySet().collect { it.pattern() } == [ /(h\w+o)/, /right/ ]
 		operator.repMap.values() as List == [ 'bye', 'left' ]
 		
 		when: 'タブを含まない行は無視します'
-		operator._ = [ "hello", "right\tleft" ]
+		operator.dflt = [ "hello", "right\tleft" ]
 		operator.tagdsl.cl("visit#reprex").call(operator)
 		then:
 		operator.repMap.keySet().collect { it.pattern() } == [ /right/ ]
@@ -48,7 +47,7 @@ class FormatReprexSpec extends Specification {
 		
 		when:
 		chunkHandle = new TpacHandle(tag: 'chunk')
-		chunkHandle._ = [ 'hello world.', 'hey-ho right world!' ]
+		chunkHandle.dflt = [ 'hello world.', 'hey-ho right world!' ]
 		coverHandle = new TpacHandle(tag: 'test')
 		coverHandle << chunkHandle
 		operator.repMap = [:]
@@ -56,6 +55,6 @@ class FormatReprexSpec extends Specification {
 		operator.repMap[Pattern.compile(/right/, Pattern.MULTILINE)] = /left/
 		operator.formatTextHandle(coverHandle)
 		then:
-		coverHandle.solvePath('chunk').dflt == [ 'Hello world.', 'Hey-ho left world!' ]
+		coverHandle.solve('chunk').dflt == [ 'Hello world.', 'Hey-ho left world!' ]
 	}
 }

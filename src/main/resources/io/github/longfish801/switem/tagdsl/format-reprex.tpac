@@ -1,10 +1,10 @@
-#! clmap:format-reprex
+#! clmap:tagdsl
 #> map:formatOperator
 #>> map:exist
 #>>> closure:reprex
 #>> map:conds
 #>>> config:reprex
-	_ {
+	dflt {
 		required = true
 		types = [ List ]
 	}
@@ -32,5 +32,5 @@
 	operator.repMap.each { Pattern pattern, String replacement ->
 		text = pattern.matcher(text).replaceAll(replacement)
 	}
-	chunkHandle._ = text.split("\n")
+	chunkHandle.dflt = text.split("\n")
 #!

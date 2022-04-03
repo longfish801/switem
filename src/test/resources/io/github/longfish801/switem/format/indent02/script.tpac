@@ -8,11 +8,12 @@
 #-include 箇条書き
 #-cover
 { def hndl ->
-	hndl.bgn = "${(hndl.tagnum == 1)? '<ul>' : ''}<li>"
-	hndl.end = "</li>${(hndl.tagnum == hndl.tagtotal)? '</ul>' : ''}"
+	hndl.bgn = '<li>'
+	if (hndl.tagnum == 1) hndl.bgn = '<ul>' + hndl.bgn
+	hndl.end = '</li>'
+	if (hndl.tagnum == hndl.tagtotal) hndl.end = hndl.end + '</ul>'
 	String indent = (hndl.upper.tag == 'doc')? '' : "\t"
 	hndl.bullet = indent
 	hndl.more = indent
-	hndl.gap = ''
-	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+	if (hndl.tagnum < hndl.tagtotal) hndl.nogap = true
 }

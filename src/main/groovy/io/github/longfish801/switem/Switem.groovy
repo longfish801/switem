@@ -16,7 +16,6 @@ import io.github.longfish801.tpac.tea.TeaHandle
 
 /**
  * switem文書に基づき文字列を変換します。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 @Slf4j('LOG')
@@ -89,16 +88,17 @@ class Switem implements TeaDec {
 			// 解析します
 			List lines = reader.readLines()
 			TeaDec dec = new TpacDec(tag: 'doc')
-			if (solvePath('parse') == null){
+			dec.gap = ''
+			if (solve('parse') == null){
 				// parseタグが未定の場合は追加します
-				TeaHandle parseHndl = maker.newTeaHandle('parse', '_', this)
+				TeaHandle parseHndl = maker.newTeaHandle('parse', 'dflt', this)
 				parseHndl.tag = 'parse'
-				parseHndl.name = '_'
+				parseHndl.name = 'dflt'
 				this << parseHndl
 				parseHndl.validate()
 				parseHndl.visit()
 			}
-			solvePath('parse').parse(dec, lines)
+			solve('parse').parse(dec, lines)
 			
 			// 解析結果を出力します
 			if (parsedWriter != null) dec.write(parsedWriter)
@@ -107,10 +107,10 @@ class Switem implements TeaDec {
 			numbering(dec)
 			
 			// 整形します
-			solvePath('format')?.format(dec)
+			solve('format')?.format(dec)
 			
 			// 出力します
-			writer.withWriter { Writer wrtr -> tagdsl.cl('output#_').call(wrtr, dec) }
+			writer.withWriter { Writer wrtr -> tagdsl.cl('output#dflt').call(wrtr, dec) }
 		} catch (exc){
 			throw new SwitemRuntimeException(String.format(msgs.exc.faileScript, key), exc)
 		}

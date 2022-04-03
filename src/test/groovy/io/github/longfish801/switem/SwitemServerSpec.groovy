@@ -14,7 +14,6 @@ import spock.lang.Unroll
 
 /**
  * SwitemServerのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 @Slf4j('LOG')
@@ -34,7 +33,7 @@ class SwitemServerSpec extends Specification {
 		
 		then:
 		noExceptionThrown()
-		tagdsl.lowers.keySet() as List == ['dec:_', 'map:switem', 'map:parse', 'map:parseOperator', 'map:formatOperator']
+		tagdsl.lowers.keySet() as List == ['dec:dflt', 'map:switem', 'map:parse', 'map:parseOperator', 'map:formatOperator']
 	}
 	
 	@Unroll

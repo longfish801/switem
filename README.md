@@ -1,9 +1,9 @@
-﻿# switem
+# switem
 
 ## Overview
 
-Switch template of text.  
-Execute a script, which parse, format, and switch to new form for text.
+Switches text formatting.  
+Run scripts to extract and process specific ranges of text.
 
 This is individual development, for self-learning.  
 No support such as troubleshooting, answering inquiries, and so on.
@@ -11,7 +11,7 @@ No support such as troubleshooting, answering inquiries, and so on.
 ## Features
 
 * Describe text processing scripts with switem notation.  
-  The switem notation is a DSL using [tpac](/tpac/).
+  The switem notation is a DSL using [tpac](/maven/tpac/).
 
 * The purpose is to replace the formatting of the text.  
   It is difficult to change the structure significantly.  
@@ -54,8 +54,7 @@ World	Groovy
 	hndl.end = '</li>'
 	hndl.bullet = (hndl.level == 1)? '' : '  '
 	hndl.more = (hndl.level == 1)? '' : '  '
-	hndl.gap = ''
-	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+	hndl.nogap = true
 }
 #>> call:p
 #-include doc
@@ -89,7 +88,8 @@ try {
 	assert html == switem.run(text).normalize()
 	assert tpac == switem.parsedWriter.toString().normalize()
 } catch (exc){
-	exc.printStackTrace()
+	println "Failed to run: ${exc.message}"
+	throw exc
 }
 ```
 
@@ -116,6 +116,7 @@ Here is a tpac document that parse the above text with switem document (src/test
 
 ```
 #! doc
+#-gap _
 #>
 
 #> chunk:1
@@ -178,7 +179,6 @@ Value
 #>
 
 #!
-
 ```
 
 Result of formatting the above tpac document with switem document (src/test/resources/formatted.html).
@@ -194,15 +194,15 @@ println 'Hello, Groovy!'
 
 <ul>
 <li>List
-  <ul>
+<ul>
   <li>Elem1<br/>
   Elem2</li>
-  </ul></li>
+</ul></li>
 <li>Map
-  <ul>
+<ul>
   <li>Key</li>
   <li>Value</li>
-  </ul></li>
+</ul></li>
 </ul>
 ```
 
@@ -210,5 +210,5 @@ This sample code is executed in the execSamples task, see build.gradle.
 
 ## Next Step
 
-Please see the [documents](https://longfish801.github.io/switem/) for more detail.
+Please see the [documents](https://longfish801.github.io/maven/switem/) for more detail.
 

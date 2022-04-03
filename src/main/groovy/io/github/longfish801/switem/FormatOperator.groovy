@@ -12,7 +12,6 @@ import io.github.longfish801.tpac.tea.TeaHandle
 
 /**
  * formatハンドルの下位ハンドルです。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 @Slf4j('LOG')
@@ -34,7 +33,7 @@ class FormatOperator implements TeaHandle {
 	@Override
 	void validate(){
 		validateKeys(cnst.conds.formatCmn)
-		ConfigObject conds = tagdsl.solvePath("map:conds/config:${tag}")?.config()
+		ConfigObject conds = tagdsl.solve("map:conds/config:${tag}")?.config()
 		if (conds != null) validateKeys(conds)
 	}
 	

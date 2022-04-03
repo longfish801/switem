@@ -14,6 +14,5 @@
 	hndl.end = '【項目：ここまで】'
 	hndl.bullet = (hndl.level == 1)? '' : "\t"
 	hndl.more = (hndl.level == 1)? '' : "\t"
-	hndl.gap = (hndl.tagnum == hndl.tagtotal && hndl.level == 1)? System.lineSeparator() : ''
-	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+	if (hndl.tagnum < hndl.tagtotal) hndl.nogap = true
 }

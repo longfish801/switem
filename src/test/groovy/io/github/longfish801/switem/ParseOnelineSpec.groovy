@@ -13,7 +13,6 @@ import spock.lang.Specification
 
 /**
  * onelineハンドルのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class ParseOnelineSpec extends Specification {
@@ -103,7 +102,7 @@ class ParseOnelineSpec extends Specification {
 		operator.tagdsl.cl('createCoverHandle#oneline').call(operator, coverHandle, ['# abc'])
 		then:
 		coverHandle.bullet == '# '
-		coverHandle.solvePath('chunk:1').dflt == [ 'abc' ]
+		coverHandle.solve('chunk:1').dflt == [ 'abc' ]
 		
 		when:
 		operator.bullet = null
@@ -112,7 +111,7 @@ class ParseOnelineSpec extends Specification {
 		coverHandle = new TpacHandle(tag: 'parse')
 		operator.tagdsl.cl('createCoverHandle#oneline').call(operator, coverHandle, ['[abc]'])
 		then:
-		coverHandle.solvePath('chunk:1').dflt == [ '[abc]' ]
+		coverHandle.solve('chunk:1').dflt == [ '[abc]' ]
 		
 		when:
 		operator.bullet = null
@@ -121,6 +120,6 @@ class ParseOnelineSpec extends Specification {
 		coverHandle = new TpacHandle(tag: 'parse')
 		operator.tagdsl.cl('createCoverHandle#oneline').call(operator, coverHandle, ['[abc]'])
 		then:
-		coverHandle.solvePath('chunk:1').dflt == [ 'abc' ]
+		coverHandle.solve('chunk:1').dflt == [ 'abc' ]
 	}
 }

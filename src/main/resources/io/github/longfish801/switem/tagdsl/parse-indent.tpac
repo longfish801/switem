@@ -1,4 +1,4 @@
-#! clmap:parse-indent
+#! clmap:tagdsl
 #> map:parseOperator
 #>> map:exist
 #>>> closure:indent

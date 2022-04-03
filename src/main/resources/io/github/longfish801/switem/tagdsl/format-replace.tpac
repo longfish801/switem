@@ -1,10 +1,10 @@
-#! clmap:format-replace
+#! clmap:tagdsl
 #> map:formatOperator
 #>> map:exist
 #>>> closure:replace
 #>> map:conds
 #>>> config:replace
-	_ {
+	dflt {
 		required = true
 		types = [ List ]
 	}
@@ -27,5 +27,5 @@
 	operator.repMap.each { String findWord, String replacement ->
 		text = text.replaceAll(Pattern.quote(findWord), Matcher.quoteReplacement(replacement))
 	}
-	chunkHandle._ = text.split("\n")
+	chunkHandle.dflt = text.split("\n")
 #!

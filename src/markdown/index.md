@@ -4,8 +4,8 @@
 
 ## 概要
 
-　テキストのテンプレートを差し替えます。
-　テキストを解析、整形して、新たな書式に差し替えるスクリプトを実行します。
+　テキストの書式を切り替えます。
+　テキストから特定の範囲を抽出し、加工するスクリプトを実行します。
 
 　個人が学習のために開発したものです。
 　故障対応や問合せ回答などのサポートはしていません。
@@ -13,7 +13,7 @@
 ## 特徴
 
 * テキストを加工するスクリプトを switem記法で記述します。
-  switem記法は [tpac](/tpac/)を利用したDSLです。
+  switem記法は [tpac](/maven/tpac/)を利用したDSLです。
 * テキストの書式を差し替えることを目的としています。
   構造を大きく変えることは困難です。
   たとえば行の集約、並べ替えには対応していません。
@@ -55,8 +55,7 @@ World	Groovy
 	hndl.end = '</li>'
 	hndl.bullet = (hndl.level == 1)? '' : '  '
 	hndl.more = (hndl.level == 1)? '' : '  '
-	hndl.gap = ''
-	hndl.lowers.values().findAll { it.tag == 'chunk' }.each { it.gap = '' }
+	hndl.nogap = true
 }
 #>> call:p
 #-include doc
@@ -90,7 +89,8 @@ try {
 	assert html == switem.run(text).normalize()
 	assert tpac == switem.parsedWriter.toString().normalize()
 } catch (exc){
-	exc.printStackTrace()
+	println "Failed to run: ${exc.message}"
+	throw exc
 }
 ```
 
@@ -117,6 +117,7 @@ println 'Hello, Groovy!'
 
 ```
 #! doc
+#-gap _
 #>
 
 #> chunk:1
@@ -179,7 +180,6 @@ Value
 #>
 
 #!
-
 ```
 
 　switem文書で上記のtpac文書を整形した結果です（src/test/resources/formatted.html）。
@@ -195,15 +195,15 @@ println 'Hello, Groovy!'
 
 <ul>
 <li>List
-  <ul>
+<ul>
   <li>Elem1<br/>
   Elem2</li>
-  </ul></li>
+</ul></li>
 <li>Map
-  <ul>
+<ul>
   <li>Key</li>
   <li>Value</li>
-  </ul></li>
+</ul></li>
 </ul>
 ```
 
@@ -213,7 +213,7 @@ println 'Hello, Groovy!'
 
 * [Groovydoc](groovydoc/)
 * [switem記法](notation.html)
-* [タグDSL](tagdsl.md)
+* [タグDSL](tagdsl.html)
 
 ## GitHubリポジトリ
 
@@ -234,3 +234,17 @@ dependencies {
 	implementation group: 'io.github.longfish801', name: 'switem', version: '0.3.00'
 }
 ```
+
+## 改版履歴
+
+0.0.01
+: ドキュメントはmavenリポジトリに出力するよう修正しました。
+
+0.0.02
+: 出力処理にnogapキーを追加し、top, btmキーのList指定に対応しました。
+
+0.0.03
+: tpac 0.3.12とclmap 0.3.06に対応しました。
+
+0.0.04
+: tpac 0.3.13に対応しました。

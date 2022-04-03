@@ -16,7 +16,6 @@ import io.github.longfish801.tpac.tea.TeaMaker
 
 /**
  * switem文書を保持します。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 @Slf4j('LOG')
@@ -43,11 +42,7 @@ class SwitemServer implements TeaServer, GropedResource {
 			LOG.debug('soak for tagdsl:path={}', it)
 			server.soak(grope(it))
 		}
-		tagdslClmap = server.cl('/tagdsl')
-		server.decs.each { String key, Clmap clmap ->
-			if (key != 'clmap') tagdslClmap += clmap
-		}
-		return tagdslClmap
+		return server.cl('/tagdsl')
 	}
 	
 	/**

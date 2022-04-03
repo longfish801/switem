@@ -1,4 +1,4 @@
-#! clmap:parse
+#! clmap:tagdsl
 #> map:parse
 #>> map:outRange
 #>>> closure:para
@@ -17,12 +17,12 @@
 	if (subLines.size() > 0) subLinesList << subLines.collect()
 	subLinesList.each {
 		TeaHandle chunkHandle = new TpacHandle(tag: 'chunk', name: "${++ chunkNum}")
-		chunkHandle._ = it
+		chunkHandle.dflt = it
 		coverHandle << chunkHandle
 	}
 #>>> closure:whole
 	TeaHandle chunkHandle = new TpacHandle(tag: 'chunk', name: "${++ chunkNum}")
-	chunkHandle._ = lines
+	chunkHandle.dflt = lines
 	coverHandle << chunkHandle
 #>>> closure:none
 	// なにもしません

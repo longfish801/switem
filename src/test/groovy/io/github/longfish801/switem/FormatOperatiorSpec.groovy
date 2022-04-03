@@ -13,7 +13,6 @@ import spock.lang.Specification
 
 /**
  * FormatOperatiorのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 class FormatOperatiorSpec extends Specification {
@@ -99,7 +98,7 @@ class FormatOperatiorSpec extends Specification {
 		operator.chunkCl = { def hndl -> return hndl.dflt.collect { "> ${it}" } }
 		TeaHandle coverHandle = new TpacHandle(tag: 'cover')
 		TeaHandle chunkHandle = new TpacHandle(tag: 'chunk')
-		chunkHandle._ = [ 'aaa' ]
+		chunkHandle.dflt = [ 'aaa' ]
 		coverHandle << chunkHandle
 		
 		when:
@@ -108,6 +107,6 @@ class FormatOperatiorSpec extends Specification {
 		operator.formatTextHandle(coverHandle)
 		then:
 		coverHandle.bgn == '---'
-		coverHandle.solvePath('chunk').dflt == [ '> aaa' ]
+		coverHandle.solve('chunk').dflt == [ '> aaa' ]
 	}
 }

@@ -14,7 +14,6 @@ import spock.lang.Unroll
 
 /**
  * Switemのテスト。
- * @version 0.1.00 2020/07/10
  * @author io.github.longfish801
  */
 @Slf4j('LOG')
@@ -40,11 +39,11 @@ class SwitemSpec extends Specification implements GropedResource {
 		coverHandle << chunkHandle1
 		Switem.numbering(coverHandle)
 		then:
-		coverHandle.solvePath('chunk:1').tag == 'chunk'
-		coverHandle.solvePath('chunk:1').num == 1
-		coverHandle.solvePath('chunk:1').total == 1
-		coverHandle.solvePath('chunk:1').tagnum == 1
-		coverHandle.solvePath('chunk:1').tagtotal == 1
+		coverHandle.solve('chunk:1').tag == 'chunk'
+		coverHandle.solve('chunk:1').num == 1
+		coverHandle.solve('chunk:1').total == 1
+		coverHandle.solve('chunk:1').tagnum == 1
+		coverHandle.solve('chunk:1').tagtotal == 1
 		
 		when:
 		coverHandle = new TpacHandle(tag: 'cover')
@@ -66,38 +65,38 @@ class SwitemSpec extends Specification implements GropedResource {
 		coverHandle1 << coverHandle11
 		Switem.numbering(coverHandle)
 		then:
-		coverHandle.solvePath('cover:1').num == 1
-		coverHandle.solvePath('cover:1').total == 5
-		coverHandle.solvePath('cover:1').tagnum == 1
-		coverHandle.solvePath('cover:1').tagtotal == 1
-		coverHandle.solvePath('chunk:1').num == 2
-		coverHandle.solvePath('chunk:1').total == 5
-		coverHandle.solvePath('chunk:1').tagnum == 1
-		coverHandle.solvePath('chunk:1').tagtotal == 2
-		coverHandle.solvePath('chunk:2').num == 3
-		coverHandle.solvePath('chunk:2').total == 5
-		coverHandle.solvePath('chunk:2').tagnum == 2
-		coverHandle.solvePath('chunk:2').tagtotal == 2
-		coverHandle.solvePath('cover:2').num == 4
-		coverHandle.solvePath('cover:2').total == 5
-		coverHandle.solvePath('cover:2').tagnum == 1
-		coverHandle.solvePath('cover:2').tagtotal == 1
-		coverHandle.solvePath('chunk:3').num == 5
-		coverHandle.solvePath('chunk:3').total == 5
-		coverHandle.solvePath('chunk:3').tagnum == 1
-		coverHandle.solvePath('chunk:3').tagtotal == 1
-		coverHandle.solvePath('cover:1/chunk:11').num == 1
-		coverHandle.solvePath('cover:1/chunk:11').total == 3
-		coverHandle.solvePath('cover:1/chunk:11').tagnum == 1
-		coverHandle.solvePath('cover:1/chunk:11').tagtotal == 2
-		coverHandle.solvePath('cover:1/chunk:12').num == 2
-		coverHandle.solvePath('cover:1/chunk:12').total == 3
-		coverHandle.solvePath('cover:1/chunk:12').tagnum == 2
-		coverHandle.solvePath('cover:1/chunk:12').tagtotal == 2
-		coverHandle.solvePath('cover:1/cover:11').num == 3
-		coverHandle.solvePath('cover:1/cover:11').total == 3
-		coverHandle.solvePath('cover:1/cover:11').tagnum == 1
-		coverHandle.solvePath('cover:1/cover:11').tagtotal == 1
+		coverHandle.solve('cover:1').num == 1
+		coverHandle.solve('cover:1').total == 5
+		coverHandle.solve('cover:1').tagnum == 1
+		coverHandle.solve('cover:1').tagtotal == 1
+		coverHandle.solve('chunk:1').num == 2
+		coverHandle.solve('chunk:1').total == 5
+		coverHandle.solve('chunk:1').tagnum == 1
+		coverHandle.solve('chunk:1').tagtotal == 2
+		coverHandle.solve('chunk:2').num == 3
+		coverHandle.solve('chunk:2').total == 5
+		coverHandle.solve('chunk:2').tagnum == 2
+		coverHandle.solve('chunk:2').tagtotal == 2
+		coverHandle.solve('cover:2').num == 4
+		coverHandle.solve('cover:2').total == 5
+		coverHandle.solve('cover:2').tagnum == 1
+		coverHandle.solve('cover:2').tagtotal == 1
+		coverHandle.solve('chunk:3').num == 5
+		coverHandle.solve('chunk:3').total == 5
+		coverHandle.solve('chunk:3').tagnum == 1
+		coverHandle.solve('chunk:3').tagtotal == 1
+		coverHandle.solve('cover:1/chunk:11').num == 1
+		coverHandle.solve('cover:1/chunk:11').total == 3
+		coverHandle.solve('cover:1/chunk:11').tagnum == 1
+		coverHandle.solve('cover:1/chunk:11').tagtotal == 2
+		coverHandle.solve('cover:1/chunk:12').num == 2
+		coverHandle.solve('cover:1/chunk:12').total == 3
+		coverHandle.solve('cover:1/chunk:12').tagnum == 2
+		coverHandle.solve('cover:1/chunk:12').tagtotal == 2
+		coverHandle.solve('cover:1/cover:11').num == 3
+		coverHandle.solve('cover:1/cover:11').total == 3
+		coverHandle.solve('cover:1/cover:11').tagnum == 1
+		coverHandle.solve('cover:1/cover:11').tagtotal == 1
 	}
 	
 	@Unroll
@@ -107,7 +106,7 @@ class SwitemSpec extends Specification implements GropedResource {
 			Switem switem = new SwitemServer().soak(grope("${tag}/${detail}/script.tpac")).switem
 			switem.parsedWriter = new StringWriter()
 			switem.run(toString("${tag}/${detail}/target.txt"))
-			return switem.parsedWriter.toString()
+			return switem.parsedWriter.toString().normalize()
 		}
 		
 		expect:
@@ -140,7 +139,7 @@ class SwitemSpec extends Specification implements GropedResource {
 			switem.parsedWriter = new StringWriter()
 			String result = switem.run(toString("${tag}/${detail}/target.txt"))
 			LOG.info("${tag} ${detail} : ${switem.parsedWriter.toString()}")
-			return result
+			return result.normalize()
 		}
 		
 		expect:
@@ -160,5 +159,6 @@ class SwitemSpec extends Specification implements GropedResource {
 		'format'	| 'subformat01'	// subformat
 		'format'	| 'indent01'	// 箇条書きの整形
 		'format'	| 'indent02'	// 複雑な箇条書きの整形
+		'format'	| 'indent03'	// tpp, btm List指定
 	}
 }

@@ -38,13 +38,13 @@ class SwitemMakerSpec extends Specification implements GropedResource {
 	@Unroll
 	def 'newTeaHandle'(){
 		given:
-		Closure getHandle = { String tag, String upperTag ->
+		Closure getHandle = { ->
 			TeaHandle upper = new TpacHandle(tag: upperTag)
 			return switemMaker.newTeaHandle(tag, 'some', upper)
 		}
 		
 		expect:
-		result.isInstance(getHandle(tag, upperTag)) == true
+		result.isInstance(getHandle()) == true
 		
 		where:
 		tag			| upperTag	|| result

@@ -1,0 +1,19 @@
+#! switem
+#> parse
+#>> indent:箇条書き
+#-bullet ・
+#-more   
+#> format
+#>> call 箇条書き
+#-include 箇条書き
+#-cover
+{ def hndl ->
+	hndl.tops = []
+	hndl.top = '【－項目】'
+	if (hndl.tagnum == 1) hndl.top = [ '【－箇条書き】', hndl.top ]
+	hndl.btm = '【項目－】'
+	if (hndl.tagnum == hndl.tagtotal) hndl.btm = [ hndl.btm, '【箇条書き－】' ]
+	hndl.bullet = null
+	hndl.more = null
+	hndl.nogap = true
+}

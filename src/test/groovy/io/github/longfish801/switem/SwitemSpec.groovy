@@ -6,6 +6,7 @@
 package io.github.longfish801.switem
 
 import groovy.util.logging.Slf4j
+import groovyx.gpars.GParsPool
 import io.github.longfish801.gonfig.GropedResource
 import io.github.longfish801.tpac.TpacHandle
 import io.github.longfish801.tpac.tea.TeaHandle
@@ -160,5 +161,39 @@ class SwitemSpec extends Specification implements GropedResource {
 		'format'	| 'indent01'	// 箇条書きの整形
 		'format'	| 'indent02'	// 複雑な箇条書きの整形
 		'format'	| 'indent03'	// tpp, btm List指定
+	}
+	
+	def 'run '(){
+		given:
+		int loopnum = 100
+		List list
+		Switem switem
+		List results
+		String expected
+		String result
+		
+		when:
+		switem = new SwitemServer().soak(grope('run/script.tpac')).switem
+		list = []
+		for (int idx in 1..loopnum) list << idx
+		results = [].asSynchronized()
+		GParsPool.withPool {
+			list.eachParallel { def idx ->
+				results << switem.run(toString('run/target.txt')).normalize()
+			}
+		}
+		result = ''
+		for (int idx in 1..loopnum){
+			result += results[idx - 1]
+			result += "\n--- ${idx} ---\n"
+		}
+		expected = ''
+		for (int idx in 1..loopnum){
+			expected += toString('run/result.txt').normalize()
+			expected += "\n--- ${idx} ---\n"
+		}
+		
+		then:
+		result == expected
 	}
 }

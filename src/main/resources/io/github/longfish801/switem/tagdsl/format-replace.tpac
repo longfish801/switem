@@ -18,14 +18,13 @@
 	}
 	operator.repMap = repMap
 #>> map:formatChunkHandle
-#>>> dec
-#-replace
-	import java.util.regex.Matcher
-	import java.util.regex.Pattern
 #>>> closure:replace
 	String text = chunkHandle.dflt.join("\n")
 	operator.repMap.each { String findWord, String replacement ->
 		text = text.replaceAll(Pattern.quote(findWord), Matcher.quoteReplacement(replacement))
 	}
 	chunkHandle.dflt = text.split("\n")
+#-dec
+	import java.util.regex.Matcher
+	import java.util.regex.Pattern
 #!

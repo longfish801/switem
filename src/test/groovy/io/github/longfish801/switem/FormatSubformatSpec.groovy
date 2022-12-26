@@ -5,7 +5,7 @@
  */
 package io.github.longfish801.switem
 
-import io.github.longfish801.clmap.ClmapClosureCallException
+import io.github.longfish801.clmap.ClmapCallException
 import io.github.longfish801.switem.SwitemMsg as msgs
 import io.github.longfish801.tpac.TpacRefer
 import io.github.longfish801.tpac.TpacSemanticException
@@ -42,13 +42,13 @@ class FormatSubformatSpec extends Specification {
 	
 	def 'visit - exception'(){
 		given:
-		ClmapClosureCallException exc
+		ClmapCallException exc
 		
 		when:
 		operator.refer = TpacRefer.newInstance(operator, 'noSuchPath')
 		operator.tagdsl.cl("visit#subformat").call(operator)
 		then:
-		exc = thrown(ClmapClosureCallException)
+		exc = thrown(ClmapCallException)
 		exc.cause instanceof TpacSemanticException
 		exc.cause.message == String.format(msgs.exc.invalidKeyType, 'refer', operator.refer)
 	}

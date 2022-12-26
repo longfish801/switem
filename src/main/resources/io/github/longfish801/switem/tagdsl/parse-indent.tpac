@@ -13,10 +13,6 @@
 		types = [ String, Pattern ]
 	}
 #>> map:visit
-#>>> dec
-#-indent
-	import java.util.regex.Matcher
-	import java.util.regex.Pattern
 #>>> closure:indent
 	// bulletキーから先頭記号で始まるときインデントを返すクロージャを初期化します
 	switch (operator.bullet){
@@ -39,6 +35,9 @@
 			}
 			break
 	}
+#-dec
+	import java.util.regex.Matcher
+	import java.util.regex.Pattern
 #>> map:detectRange
 #>>> closure:indent
 	// 開始行でなければ終了します
@@ -52,7 +51,6 @@
 	}
 	if (size == 0) size = lines.size() - lineIdx
 #>> map:createCoverHandle
-#>>> dec
 #>>> closure:indent
 	String firstLine = lines.pop()
 	coverHandle.bullet = operator.getIndent.call(firstLine)

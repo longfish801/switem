@@ -1,5 +1,5 @@
 #! clmap:tagdsl
-#> dec
+#-dec
 	import io.github.longfish801.tpac.tea.TeaHandle
 #> map:switem
 #: switem全般にかかわる処理です。
@@ -7,25 +7,25 @@
 #: 出力処理です。
 #: テキストハンドルを文字列に加工します。
 #: 下位のハンドルを再帰的に呼びます。
-#>>> args
-#: 出力用のWriterと、出力対象のテキストハンドルを渡します。
+#: 引数として、出力用のWriterと、出力対象のテキストハンドルを渡します。
+#-args
 	Writer writer
 	TeaHandle hndl
 #> map:parse
 #>> map:outRange
 #: すべてのparse操作ハンドルでも解析対象外となった行の扱いを決めます。
-#>>> dec
+#: 引数として、上位のカバーハンドル、解析対象外となった行のリスト、チャンクハンドルの通し番号を渡します。
+#: 作成したチャンクハンドルの個数分だけ加算した通し番号を返します。
+#-dec
 	import io.github.longfish801.tpac.TpacHandle
-#>>> args
-#: 上位のカバーハンドル、解析対象外となった行のリスト、チャンクハンドルの通し番号を渡します。
+#-args
 	TeaHandle coverHandle
 	List lines
 	int chunkNum
-#>>> return
-#: 作成したチャンクハンドルの個数分だけ加算した通し番号を返します。
+#-return
 	chunkNum
 #> map:parseOperator
-#>> dec
+#-dec
 	import io.github.longfish801.switem.ParseOperator
 #>> map:exist
 #: parse操作ハンドルの存在確認に使用します。
@@ -36,34 +36,34 @@
 #>> map:visit
 #: 必要に応じて初期化します。
 #: io.github.longfish801.tpac.tea.TeaHandle#visitに相当する処理です。
-#>>> args
-#: 操作ハンドルのインスタンスを渡します。
+#: 引数として操作ハンドルのインスタンスを渡します。
+#-args
 	ParseOperator operator
 #>> map:detectRange
 #: 解析対象とする範囲を検出します。
-#>>> args
-#: 操作ハンドルのインスタンス、解析対象行のリスト、解析位置を渡します。
+#: 引数として操作ハンドルのインスタンス、解析対象行のリスト、解析位置を渡します。
+#: 戻り値として lines[lineIdx]が解析対象の開始でなければ0を返してください。
+#: 解析対象の開始行であれば、終了行までの行数を返してください。
+#-args
 	ParseOperator operator
 	List lines
 	int lineIdx
-#>>> return
-#: lines[lineIdx]が解析対象の開始でなければ0を返してください。
-#: 解析対象の開始行であれば、終了行までの行数を返してください。
+#-return
 	int size
-#>>> prefix
+#-prefix
 	size = 0
 #>> map:createCoverHandle
 #: カバーハンドルを作成します。
 #: カバーハンドルのインスタンスは作成済であり、引数として渡します。
 #: カバーハンドルにキーを設定したり、
 #: ParseOperator#parseRecursiveを読んで再帰的に下位の解析をしたりします。
-#>>> args
-#: 操作ハンドルのインスタンス、カバーハンドル、行リストを渡します。
+#: 引数として操作ハンドルのインスタンス、カバーハンドル、行リストを渡します。
+#-args
 	ParseOperator operator
 	TeaHandle coverHandle
 	List lines
 #> map:formatOperator
-#>> dec
+#-dec
 	import io.github.longfish801.switem.FormatOperator
 #>> map:exist
 #: format操作ハンドルの存在確認に使用します。
@@ -74,19 +74,19 @@
 #>> map:visit
 #: 必要に応じて初期化します。
 #: io.github.longfish801.tpac.tea.TeaHandle#visitに相当する処理です。
-#>>> args
-#: 操作ハンドルのインスタンスを渡します。
+#: 引数として操作ハンドルのインスタンスを渡します。
+#-args
 	FormatOperator operator
 #>> map:formatCoverHandle
 #: カバーハンドルを整形します。
-#>>> args
-#: 操作ハンドルのインスタンスを渡します。
+#: 引数として操作ハンドルのインスタンスを渡します。
+#-args
 	FormatOperator operator
 	TeaHandle coverHandle
 #>> map:formatChunkHandle
 #: チャンクハンドルを整形します。
-#>>> args
-#: 操作ハンドルのインスタンスを渡します。
+#: 引数として操作ハンドルのインスタンスを渡します。
+#-args
 	FormatOperator operator
 	TeaHandle chunkHandle
 #!

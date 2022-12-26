@@ -10,11 +10,6 @@
 		types = [ TpacRefer, null ]
 	}
 #>> map:visit
-#>>> dec
-#-subformat
-	import io.github.longfish801.switem.SwitemFormat
-	import io.github.longfish801.switem.SwitemMsg as msgs
-	import io.github.longfish801.tpac.TpacSemanticException
 #>>> closure:subformat
 	// referキーから下位のハンドルに適用する formatハンドルを初期化します
 	if (operator.refer == null){
@@ -25,4 +20,8 @@
 	if (!(operator.formatRefer instanceof SwitemFormat)){
 		throw new TpacSemanticException(String.format(msgs.exc.invalidKeyType, 'refer', operator.refer))
 	}
+#-dec
+	import io.github.longfish801.switem.SwitemFormat
+	import io.github.longfish801.switem.SwitemMsg as msgs
+	import io.github.longfish801.tpac.TpacSemanticException
 #!

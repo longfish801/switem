@@ -48,7 +48,7 @@ class FormatCallSpec extends Specification {
 		clmapScript = '''\
 			#! clmap
 			#> map
-			#>> args
+			#-args
 				String name
 			#>> closure:hello
 				return "Hello ${name}"

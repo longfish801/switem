@@ -9,9 +9,6 @@
 		types = [ List ]
 	}
 #>> map:visit
-#>>> dec
-#-reprex
-	import java.util.regex.Pattern
 #>>> closure:reprex
 	// デフォルトキーから検索語と置換語とのマップを初期化します
 	Map repMap = [:]
@@ -23,14 +20,15 @@
 		}
 	}
 	operator.repMap = repMap
-#>> map:formatChunkHandle
-#>>> dec
-#-reprex
+#-dec
 	import java.util.regex.Pattern
+#>> map:formatChunkHandle
 #>>> closure:reprex
 	String text = chunkHandle.dflt.join("\n")
 	operator.repMap.each { Pattern pattern, String replacement ->
 		text = pattern.matcher(text).replaceAll(replacement)
 	}
 	chunkHandle.dflt = text.split("\n")
+#-dec
+	import java.util.regex.Pattern
 #!

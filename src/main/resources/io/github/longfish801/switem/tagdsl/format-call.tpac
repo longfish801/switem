@@ -12,10 +12,6 @@
 		types = [ List, TpacRefer ]
 	}
 #>> map:visit
-#>>> dec
-#-call
-	import io.github.longfish801.switem.SwitemConst as cnst
-	import io.github.longfish801.tpac.TpacRefer
 #>>> closure:call
 	// coverキーからカバーハンドルを整形するクロージャを初期化します
 	if (operator.cover != null){
@@ -31,6 +27,9 @@
 			case TpacRefer: operator.chunkCl = operator.chunk.refer(); break
 		}
 	}
+#-dec
+	import io.github.longfish801.switem.SwitemConst as cnst
+	import io.github.longfish801.tpac.TpacRefer
 #>> map:formatCoverHandle
 #>>> closure:call
 	operator.coverCl?.call(coverHandle)

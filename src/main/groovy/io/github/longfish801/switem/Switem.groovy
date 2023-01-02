@@ -13,6 +13,7 @@ import io.github.longfish801.tpac.TpacDec
 import io.github.longfish801.tpac.TpacHandle
 import io.github.longfish801.tpac.tea.TeaDec
 import io.github.longfish801.tpac.tea.TeaHandle
+import groovy.transform.Synchronized
 
 /**
  * switem文書に基づき文字列を変換します。
@@ -79,6 +80,7 @@ class Switem implements TeaDec {
 	 * @throws SwitemRuntimeException switemスクリプト実行中に問題が起きました。
 	 * @return 自インスタンス
 	 */
+	@Synchronized
 	Switem run(BufferedReader reader, BufferedWriter writer){
 		LOG.debug('BGN run: key={}', key)
 		try {

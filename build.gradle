@@ -15,7 +15,7 @@ plugins {
 
 defaultTasks 'fix'
 group = 'io.github.longfish801'
-version = '1.1.00'
+version = '1.2.00'
 
 // mavenローカルリポジトリへのパスが設定されているか確認します
 if (System.properties.mavenPath == null || System.properties.mavenPath.empty){
@@ -29,13 +29,14 @@ repositories {
 }
 
 dependencies {
-	api 'io.github.longfish801:clmap:1.1.00'
+	api 'io.github.longfish801:clmap:1.2.00'
 	api 'io.github.longfish801:gonfig:1.1.00'
-	api 'io.github.longfish801:tpac:1.1.00'
+	api 'io.github.longfish801:tpac:1.2.00'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	implementation 'org.codehaus.groovy:groovy-all:3.0.9'
 	implementation 'org.slf4j:slf4j-api:1.7.36'
 	testImplementation 'ch.qos.logback:logback-classic:1.2.11'
+	testImplementation 'org.codehaus.gpars:gpars:1.2.1'
 	testImplementation('org.spockframework:spock-core:2.1-groovy-3.0') {
 		exclude group: 'org.codehaus.groovy'
 	}

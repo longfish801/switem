@@ -15,7 +15,7 @@ plugins {
 
 defaultTasks 'fix'
 group = 'io.github.longfish801'
-version = '1.2.00'
+version = '1.3.00'
 
 // mavenローカルリポジトリへのパスが設定されているか確認します
 if (System.properties.mavenPath == null || System.properties.mavenPath.empty){
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-	api 'io.github.longfish801:clmap:1.2.00'
+	api 'io.github.longfish801:clmap:2.0.00'
 	api 'io.github.longfish801:gonfig:1.1.00'
 	api 'io.github.longfish801:tpac:1.2.00'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'

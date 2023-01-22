@@ -5,7 +5,7 @@
  */
 package io.github.longfish801.switem
 
-import io.github.longfish801.clmap.ClmapClosureCallException
+import io.github.longfish801.clmap.ClmapCallException
 import io.github.longfish801.switem.SwitemMsg as msgs
 import io.github.longfish801.tpac.TpacHandle
 import io.github.longfish801.tpac.tea.TeaHandle
@@ -78,7 +78,7 @@ class ParseEncloseSpec extends Specification {
 	
 	def 'detectRange - exception'(){
 		given:
-		ClmapClosureCallException exc
+		ClmapCallException exc
 		
 		when:
 		operator.bgn = '---'
@@ -86,7 +86,7 @@ class ParseEncloseSpec extends Specification {
 		operator.visit()
 		operator.tagdsl.cl('detectRange#enclose').call(operator, ['aaa', '---', 'bbb'], 1)
 		then:
-		exc = thrown(ClmapClosureCallException)
+		exc = thrown(ClmapCallException)
 		exc.cause instanceof ParseException
 		exc.cause.message == String.format(msgs.exc.noEndLine, '---')
 	}

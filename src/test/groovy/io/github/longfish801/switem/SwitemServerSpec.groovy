@@ -33,7 +33,7 @@ class SwitemServerSpec extends Specification {
 		
 		then:
 		noExceptionThrown()
-		tagdsl.lowers.keySet() as List == ['dec:dflt', 'map:switem', 'map:parse', 'map:parseOperator', 'map:formatOperator']
+		tagdsl.lowers.keySet() as List == ['map:switem', 'map:parse', 'map:parseOperator', 'map:formatOperator']
 	}
 	
 	@Unroll

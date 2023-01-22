@@ -13,9 +13,6 @@
 		types = [ String, Pattern ]
 	}
 #>> map:visit
-#>>> dec
-#-enclose
-	import java.util.regex.Pattern
 #>>> closure:enclose
 	// bgnキーから範囲の開始か否か判定するクロージャを初期化します
 	switch (operator.bgn){
@@ -31,11 +28,9 @@
 			case Pattern: operator.isEnd = { String line, String bgnLine -> return operator.end.matcher(line).matches() }; break
 		}
 	}
+#-dec
+	import java.util.regex.Pattern
 #>> map:detectRange
-#>>> dec
-#-enclose
-	import io.github.longfish801.switem.ParseException
-	import io.github.longfish801.switem.SwitemMsg as msgs
 #>>> closure:enclose
 	// 開始行でなければ終了します
 	if (operator.isBgn.call(lines[lineIdx]) == false) return size
@@ -56,8 +51,10 @@
 	if (size == 0){
 		throw new ParseException(String.format(msgs.exc.noEndLine, bgnLines.first()))
 	}
+#-dec
+	import io.github.longfish801.switem.ParseException
+	import io.github.longfish801.switem.SwitemMsg as msgs
 #>> map:createCoverHandle
-#>>> dec
 #>>> closure:enclose
 	coverHandle.top = lines.removeAt(0)
 	coverHandle.btm = lines.removeLast()
